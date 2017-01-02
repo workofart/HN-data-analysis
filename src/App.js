@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import TableMain from './components/Table/Table';
-import {Row, Col} from 'react-bootstrap';
+import {Row, Col, PageHeader, Grid} from 'react-bootstrap';
 
 
 class App extends Component {
@@ -13,11 +13,22 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>HackerNews Data Analysis</h2>          
         </div>
-        <Row>
-          <Col md={6} mdOffset={3}>
-            <TableMain />            
-          </Col>
-        </Row>
+        <Grid fluid={true}>
+            <Row>
+              <Col md={6}>
+                <PageHeader>
+                    Top Comments
+                </PageHeader>
+                <TableMain />
+              </Col>
+                <Col md={6}>
+                    <PageHeader>
+                        Top Comments
+                    </PageHeader>
+                    <TableMain />
+                </Col>
+            </Row>
+        </Grid>
       </div>
     );
   }
