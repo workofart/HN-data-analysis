@@ -1,22 +1,31 @@
 {
-  "name": "HN-data-analysis",
-  "version": "0.1.0",
-  "private": true,
+  "name": "hn-data-analysis",
+  "version": "1.0.0",
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "babel-node server.js",
+    "client": "babel-node start-client.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/workofart/HN-data-analysis.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/workofart/HN-data-analysis/issues"
+  },
+  "homepage": "https://github.com/workofart/HN-data-analysis#readme",
   "devDependencies": {
-    "react-scripts": "0.8.3"
+    "babel-cli": "^6.18.0",
+    "concurrently": "^3.1.0"
   },
   "dependencies": {
-    "bootstrap": "^3.3.7",
-    "datatables.net": "^1.10.13",
-    "react": "^15.4.1",
-    "react-bootstrap": "^0.30.7",
-    "react-dom": "^15.4.1",
+    "express": "^4.14.0",
+    "promise": "^7.1.1",
     "underscore": "^1.8.3"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
   }
 }

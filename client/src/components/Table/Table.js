@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import {Table} from 'react-bootstrap';
 import CommentRow from '../CommentRow/CommentRow';
 var _ = require('underscore');
-var commentJSON = require('../../data/test.json');
+var commentJSON = require('../../../../data/test.json');
 
 class TableMain extends Component {
 	render() {
+
 		this.state = {
 			commentJSON: commentJSON
 		};
@@ -20,7 +21,7 @@ class TableMain extends Component {
 							<tr>
 								<th>#</th>
 								<th>Comment</th>
-								<th>Popularity</th>
+								<th>Comments</th>
 							</tr>
 						</thead>
 						<tbody>
