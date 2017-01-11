@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Table} from 'react-bootstrap';
-import CommentRow from '../CommentRow/CommentRow';
+import CommentRow from '../TableRow/CommentRow';
 var _ = require('underscore');
 var commentJSON = require('../../../../data/test.json');
 

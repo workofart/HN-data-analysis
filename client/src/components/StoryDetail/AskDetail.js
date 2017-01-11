@@ -8,9 +8,9 @@ import CommentRow from '../TableRow/CommentRow';
 var _ = require('underscore');
 var $ = require('jquery');
 
-function getStoryDetail(storyId) {
+function getAskDetail(storyId) {
     console.log('storyId '  + storyId)
-    var url = '/api/getStoryDetails/' + storyId;
+    var url = '/api/getAskDetails/' + storyId;
     return JSON.parse($.ajax({url: url,
         type: 'get',
         async: false
@@ -49,11 +49,11 @@ const TopComments = () =>
 class StoryDetail extends Component {
     render() {
         this.state = {
-            askDetail: getStoryDetail(this.props.params.storyId),
+            askDetail: getAskDetail(this.props.params.storyId),
             topComments: getTopComments(this.props.params.storyId)
         };
 
-        var storyDetail = this.state.askDetail;
+        var askDetail = this.state.askDetail;
         var topComments = this.state.topComments;
         console.log(topComments);
         var topCommentsRows = [];
@@ -65,7 +65,7 @@ class StoryDetail extends Component {
                 <Grid fluid={true}>
                     <Row>
                         <Col md={6}>
-                            <BasicInfo id={storyDetail.id} title={storyDetail.title} date={convertUnixDate(storyDetail.time)} author={storyDetail.by} score={storyDetail.score} url={storyDetail.url} text={storyDetail.text}/>
+                            <BasicInfo id={askDetail.id} title={askDetail.title} date={convertUnixDate(askDetail.time)} author={askDetail.by} score={askDetail.score} url={askDetail.url} text={askDetail.text}/>
                         </Col>
                         <Col md={6}>
                             <SideInfo rows={topCommentsRows}/>

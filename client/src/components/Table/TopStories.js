@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Table} from 'react-bootstrap';
-import CommentRow from '../CommentRow/CommentRow';
+import StoryRow from '../TableRow/StoryRow';
 var _ = require('underscore');
 var $ = require('jquery');
 
@@ -23,7 +23,7 @@ class TopStoriesTable extends Component {
 
         var rows = [];
         this.state.topStoriesJSON.forEach(function(story, i) {
-            rows.push(<CommentRow key={story.id} storyId={story.id} id={i+1} Text={story.title} Score={story.score} Kids={story.descendants} />);
+            rows.push(<StoryRow key={story.id} storyId={story.id} id={i+1} Text={story.title} Score={story.score} Kids={story.descendants} />);
         });
         return (
             <Table responsive hover>

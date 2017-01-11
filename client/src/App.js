@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {Router, Route, IndexRoute, hashHistory, Link, browserHistory} from 'react-router';
-import TableMain from './components/Table/Table';
-import TopStoriesTable from './components/Table/TopStories';
 import {Row, Col, PageHeader, Grid, Jumbotron, Alert} from 'react-bootstrap';
 import Container from './Container';
+import TopStoriesTable from './components/Table/TopStories';
+import TopAsksTable from './components/Ask/TopAsks';
 import StoryDetail from './components/StoryDetail/StoryDetail';
+import AskDetail from './components/StoryDetail/AskDetail';
 
 
 const Home = () =>
@@ -36,17 +37,18 @@ const TopStories = () =>
         </Grid>
     </div>
 
-const TopComments = () =>
-    <Col md={6}>
-        <PageHeader>
-            Top Comments
-        </PageHeader>
-        <TableMain />
-    </Col>
-
 const TopAsks = () =>
     <div className="App-body">
-        <h1>Top Asks Placeholder</h1>
+        <Grid fluid={true}>
+            <Row>
+                <Col md={12}>
+                    <PageHeader>
+                        Top Asks
+                    </PageHeader>
+                    <TopAsksTable />
+                </Col>
+            </Row>
+        </Grid>
     </div>
 
 const NotFound = () =>
@@ -72,6 +74,7 @@ class App extends Component {
                         <Route path='topStories' component={TopStories}/>
                         <Route path='topAsks' component={TopAsks}/>
                         <Route path='topStories/:storyId' components={StoryDetail} />
+                        <Route path='topAsks/:storyId' components={AskDetail} />
                     </Route>
                     <Route path="/login" component={Login} />
                     <Route path='*' component={NotFound}/>

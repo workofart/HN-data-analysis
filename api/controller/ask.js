@@ -1,9 +1,7 @@
 var fs = require('fs');
+var askPath = './data/top_asks_20170103';
 var _ = require('underscore');
-var Promise = require('promise');
 
-var storyPath = './data/top_stories_20170101';
-var commentPath = './data/topComments';
 
 var sendJsonResponse = function (res, status, content){
     res.status(status);
@@ -11,15 +9,14 @@ var sendJsonResponse = function (res, status, content){
 }
 
 
-
-module.exports.getTopStories = function (req, res) {
+module.exports.getTopAsks = function (req, res) {
     var objArr = [];
 
     // var readStories =
-    var files = fs.readdirSync(storyPath);
+    var files = fs.readdirSync(askPath);
     files.forEach(file => {
         // console.log(file);
-        data = fs.readFileSync(storyPath + "/" + file, 'utf8')
+        data = fs.readFileSync(askPath + "/" + file, 'utf8')
         temp = JSON.parse(data);
         obj = {
             'descendants' : temp.descendants,
@@ -32,12 +29,11 @@ module.exports.getTopStories = function (req, res) {
     sendJsonResponse(res, 200, objArr);
 }
 
-
-module.exports.getStoryDetails = function (req, res) {
+module.exports.getAskDetails = function (req, res) {
     var objArr = [];
 
     // var readStories =
-    var files = fs.readdirSync(storyPath);
+    var files = fs.readdirSync(askPath);
     var targetFile = _.find(files, function (file) {
         // console.log(req.params.id + 'vs  ' + file.substr(0, file.length-5));
         if (file.substr(0, file.length-5) == req.params.id){
@@ -45,7 +41,7 @@ module.exports.getStoryDetails = function (req, res) {
         }
 
     });
-    data = fs.readFileSync(storyPath + "/" + targetFile, 'utf8');
+    data = fs.readFileSync(askPath + "/" + targetFile, 'utf8');
     obj = JSON.parse(data);
     sendJsonResponse(res, 200, obj);
 }
@@ -61,3 +57,4 @@ module.exports.getTopComments = function (req, res) {
     obj = JSON.parse(data);
     sendJsonResponse(res, 200, obj);
 }
+
