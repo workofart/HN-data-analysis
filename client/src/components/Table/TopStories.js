@@ -6,17 +6,6 @@ import 'react-bootstrap/dist/react-bootstrap.min';
 var _ = require('underscore');
 var $ = require('jquery');
 
-
-function getTopStories() {
-    var url = '/api/getTopStories';
-    return JSON.parse($.ajax({url: url,
-        type: 'get',
-        async: false
-
-    }).responseText);
-
-}
-
 function getCaret(direction) {
     if (direction === 'asc') {
         return (
@@ -60,20 +49,38 @@ function linkFormatter(cell, row) {
     )
 }
 class TopStoriesTable extends Component {
-    render() {
-
+    constructor(props, context) {
+        super(props, context);
         this.state = {
-            topStoriesJSON: getTopStories()
+            topStoriesJSON: null
         };
-
+    }
+    componentDidMount() {
+        $.get('/api/getTopStories').done(function(data) {
+            this.setState({topStoriesJSON: data});
+        }.bind(this));
+    }
+    render() {
+        if(this.state.topStoriesJSON) {
+            return (
+                <BootstrapTable data={this.state.topStoriesJSON} pagination={true} search={true}
+                                options={searchCallBackOptions} striped hover>
+                    <TableHeaderColumn isKey searchable={true} className='alert-info' dataField='id' width='100'>Story
+                        ID</TableHeaderColumn>
+                    <TableHeaderColumn dataField='title' className='alert-info' headerAlign='center'
+                                       dataFormat={linkFormatter} width='500'>Title</TableHeaderColumn>
+                    <TableHeaderColumn dataField='score' className='alert-info' headerAlign='center'
+                                       caretRender={getCaret} searchable={false} dataSort={true}
+                                       width='100'>Score</TableHeaderColumn>
+                    <TableHeaderColumn dataField='descendants' className='alert-info' headerAlign='center'
+                                       caretRender={getCaret} searchable={false} dataSort={true}>#
+                        Comments</TableHeaderColumn>
+                </BootstrapTable>
+            );
+        }
         return (
-            <BootstrapTable data={this.state.topStoriesJSON} pagination={true} search={true} options={searchCallBackOptions} striped hover>
-                <TableHeaderColumn isKey searchable={true} className='alert-info' dataField='id' width='100'>Story ID</TableHeaderColumn>
-                <TableHeaderColumn dataField='title' className='alert-info' headerAlign='center' dataFormat={linkFormatter} width='500'>Title</TableHeaderColumn>
-                <TableHeaderColumn dataField='score' className='alert-info' headerAlign='center' caretRender={getCaret} searchable={false} dataSort={true} width='100'>Score</TableHeaderColumn>
-                <TableHeaderColumn dataField='descendants' className='alert-info' headerAlign='center' caretRender={getCaret} searchable={false} dataSort={true}># Comments</TableHeaderColumn>
-            </BootstrapTable>
-        );
+            <div>Loading</div>
+        )
     }
 }
 
@@ -82,11 +89,11 @@ class TopStoriesTable extends Component {
 //     render() {
 //
 //         this.state = {
-//             topStoriesJSON: getTopStories()
+//             topAsksJSON: getTopStories()
 //         };
 //
 //         var rows = [];
-//         this.state.topStoriesJSON.forEach(function(story, i) {
+//         this.state.topAsksJSON.forEach(function(story, i) {
 //             rows.push(<StoryRow key={story.id} storyId={story.id} id={i+1} Text={story.title} Score={story.score} Kids={story.descendants} />);
 //         });
 //         return (

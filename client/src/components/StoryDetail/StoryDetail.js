@@ -47,33 +47,49 @@ const TopComments = () =>
 
 
 class StoryDetail extends Component {
-    render() {
+    constructor() {
+        super();
         this.state = {
-            askDetail: getStoryDetail(this.props.params.storyId),
-            topComments: getTopComments(this.props.params.storyId)
+            askDetail : null,
+            topComments: null
         };
+    }
+    componentDidMount() {
+        $.get('/api/getStoryDetails/' + this.props.params.storyId).done(function (data) {
+            this.setState({askDetail : data});
+        }.bind(this));
 
-        var storyDetail = this.state.askDetail;
-        var topComments = this.state.topComments;
-        console.log(topComments);
-        var topCommentsRows = [];
-        this.state.topComments.forEach(function(comment, i) {
-            topCommentsRows.push(<CommentRow key={comment.id} commentId={comment.id} id={i+1} Text={comment.text} Kids={comment.decendents} />);
-        });
+        $.get('/api/getTopComments/' + this.props.params.storyId).done(function (data) {
+            this.setState({topComments: data});
+        }.bind(this));
+    }
+    render() {
+
+        if(this.state.askDetail && this.state.topComments) {
+            var storyDetail = this.state.askDetail;
+            var topCommentsRows = [];
+            this.state.topComments.forEach(function(comment, i) {
+                topCommentsRows.push(<CommentRow key={comment.id} commentId={comment.id} id={i+1} Text={comment.text} Kids={comment.decendents} />);
+            });
+            return (
+                <div className="App-body">
+                    <Grid fluid={true}>
+                        <Row>
+                            <Col md={6}>
+                                <BasicInfo id={storyDetail.id} title={storyDetail.title} date={convertUnixDate(storyDetail.time)} author={storyDetail.by} score={storyDetail.score} url={storyDetail.url} text={storyDetail.text}/>
+                            </Col>
+                            <Col md={6}>
+                                <SideInfo rows={topCommentsRows}/>
+                            </Col>
+                        </Row>
+                    </Grid>
+                </div>
+            );
+        }
         return (
-            <div className="App-body">
-                <Grid fluid={true}>
-                    <Row>
-                        <Col md={6}>
-                            <BasicInfo id={storyDetail.id} title={storyDetail.title} date={convertUnixDate(storyDetail.time)} author={storyDetail.by} score={storyDetail.score} url={storyDetail.url} text={storyDetail.text}/>
-                        </Col>
-                        <Col md={6}>
-                            <SideInfo rows={topCommentsRows}/>
-                        </Col>
-                    </Row>
-                </Grid>
-            </div>
-        );
+            <h3>Loading</h3>
+        )
+
     }
 }
 
