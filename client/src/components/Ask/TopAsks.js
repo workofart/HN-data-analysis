@@ -1,13 +1,25 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import {Dimmer, Loader, Image, Segment} from 'semantic-ui-react';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import 'react-bootstrap/dist/react-bootstrap.min';
+import 'semantic-ui-css/semantic.min.css';
 import 'fixed-data-table/dist/fixed-data-table.css';
 
 var _ = require('underscore');
 var $ = require('jquery');
 
+const CustomLoader = () => (
+    <Segment>
+        <Dimmer active>
+            <Loader size='massive'/>
+        </Dimmer>
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+    </Segment>
+)
 
 function getCaret(direction) {
     if (direction === 'asc') {

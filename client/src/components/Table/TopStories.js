@@ -2,9 +2,32 @@ import React, { Component } from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import {Link} from 'react-router';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import 'semantic-ui-css/semantic.min.css';
 import 'react-bootstrap/dist/react-bootstrap.min';
+import {Dimmer, Loader, Image, Segment} from 'semantic-ui-react';
 var _ = require('underscore');
 var $ = require('jquery');
+
+
+const CustomLoader = () => (
+    <Segment>
+        <Dimmer active>
+            <Loader size='massive'/>
+        </Dimmer>
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
+    </Segment>
+)
 
 function getCaret(direction) {
     if (direction === 'asc') {
@@ -79,7 +102,7 @@ class TopStoriesTable extends Component {
             );
         }
         return (
-            <div>Loading</div>
+            <CustomLoader/>
         )
     }
 }

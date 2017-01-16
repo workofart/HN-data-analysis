@@ -30,6 +30,7 @@ const TopStories = () =>
                 <Col md={12}>
                     <PageHeader>
                         Top Stories
+                        <span className="glyphicon glyphicon-book" />
                     </PageHeader>
                     <TopStoriesTable />
                 </Col>
@@ -44,6 +45,7 @@ const TopAsks = () =>
                 <Col md={12}>
                     <PageHeader>
                         Top Asks
+                        <span className="glyphicon glyphicon-question-sign" />
                     </PageHeader>
                     <TopAsksTable />
                 </Col>

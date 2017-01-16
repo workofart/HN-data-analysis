@@ -1,15 +1,31 @@
 import React from 'react';
 import {Panel, Label, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {Statistic} from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css';
 
+
+// const CustomLabel = props => {
+//     if (props.title != null) {
+//         return (
+//             <ListGroup>
+//                 <ListGroupItem header={props.titleLabel}>
+//                     {props.title}
+//                 </ListGroupItem>
+//             </ListGroup>
+//         );
+//     }
+//     return (<div></div>);
+// }
 
 const CustomLabel = props => {
     if (props.title != null) {
         return (
-            <ListGroup>
-                <ListGroupItem header={props.titleLabel}>
-                    {props.title}
-                </ListGroupItem>
-            </ListGroup>
+            <Statistic.Group>
+                <Statistic>
+                    <Statistic.Value>{props.title}</Statistic.Value>
+                    <Statistic.Label>{props.titleLabel}</Statistic.Label>
+                </Statistic>
+            </Statistic.Group>
         );
     }
     return (<div></div>);
