@@ -41,26 +41,25 @@ function afterSearch(query, result) {
     // console.log('Result: ' + result);
 }
 
-var SideInfo = React.createClass({
+var StoryVocabulary = React.createClass({
     render: function () {
-        if(this.props.rows) {
-            // Loop through dataset to generate comment replies
-            for(var i = 0; i < this.props.rows.length; i++) {
-                this.props.rows[i].numKids = this.props.rows[i].kids.length;
-            }
+        if(this.props.rows && this.props.rows != -1) {
+            console.log(this.props.rows);
             return (
                 <BootstrapTable data={this.props.rows} pagination={true} search={true}
                                 options={searchCallBackOptions} striped hover>
-                    <TableHeaderColumn isKey searchable={false} className='alert-info' dataField='id' width='100'>Comment
-                        ID</TableHeaderColumn>
-                    <TableHeaderColumn dataField='text' className='alert-info' headerAlign='center'
+                    <TableHeaderColumn isKey searchable={false} className='alert-info' dataField='word' width='30'>Word</TableHeaderColumn>
+                    <TableHeaderColumn dataField='freq' className='alert-info' headerAlign='center'
                                        searchable={true}
-                                       width='600'>Comment</TableHeaderColumn>
-                    <TableHeaderColumn dataField='numKids' className='alert-info' headerAlign='center'
-                                       searchable={false} dataSort={true}>#
-                        Replies</TableHeaderColumn>
+                                       width='20'>Frequency</TableHeaderColumn>
                 </BootstrapTable>
             );
+        }
+        else if (this.props.rows === -1) {
+            // There are no vocabulary for the story
+            return (
+                <h1>No vocabulary for this story</h1>
+            )
         }
         return (
             <CustomLoader/>
@@ -69,4 +68,4 @@ var SideInfo = React.createClass({
 });
 
 
-export default SideInfo;
+export default StoryVocabulary;

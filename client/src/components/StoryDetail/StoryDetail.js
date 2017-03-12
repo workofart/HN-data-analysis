@@ -3,6 +3,8 @@ import {Grid, Row, Col, PageHeader} from 'react-bootstrap';
 import BasicInfo from './BasicInfo';
 import TableMain from '../Table/Table';
 import SideInfo from './SideInfo';
+import StoryVocabulary from './StoryVocabulary';
+
 import CommentRow from '../TableRow/CommentRow';
 
 var _ = require('underscore');
@@ -51,7 +53,8 @@ class StoryDetail extends Component {
         super();
         this.state = {
             askDetail : null,
-            topComments: null
+            topComments: null,
+            storyVocabulary: null
         };
     }
     componentDidMount() {
@@ -62,15 +65,24 @@ class StoryDetail extends Component {
         $.get('/api/getTopComments/' + this.props.params.storyId).done(function (data) {
             this.setState({topComments: data});
         }.bind(this));
+
+        $.get('/api/getStoryVocabulary/' + this.props.params.storyId).done(function (data) {
+            if (data !== -1) {
+                this.setState({storyVocabulary : data.vocabulary});
+            }
+            else {
+                this.setState({storyVocabulary : data});
+            }
+        }.bind(this));
     }
     render() {
 
         if(this.state.askDetail && this.state.topComments) {
             var storyDetail = this.state.askDetail;
             var topCommentsRows = [];
-            this.state.topComments.forEach(function(comment, i) {
-                topCommentsRows.push(<CommentRow key={comment.id} commentId={comment.id} id={i+1} Text={comment.text} Kids={comment.decendents} />);
-            });
+            // this.state.topComments.forEach(function(comment, i) {
+            //     topCommentsRows.push(<CommentRow key={comment.id} commentId={comment.id} id={i+1} Text={comment.text} Kids={comment.kids.length} />);
+            // });
             return (
                 <div className="App-body">
                     <Grid fluid={true}>
@@ -79,7 +91,12 @@ class StoryDetail extends Component {
                                 <BasicInfo id={storyDetail.id} title={storyDetail.title} date={convertUnixDate(storyDetail.time)} author={storyDetail.by} score={storyDetail.score} url={storyDetail.url} text={storyDetail.text}/>
                             </Col>
                             <Col md={6}>
-                                <SideInfo rows={topCommentsRows}/>
+                                <SideInfo rows={this.state.topComments}/>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md={4}>
+                                <StoryVocabulary rows={this.state.storyVocabulary}/>
                             </Col>
                         </Row>
                     </Grid>

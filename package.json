@@ -24,8 +24,10 @@
     "concurrently": "^3.1.0"
   },
   "dependencies": {
+    "async": "^2.1.4",
     "express": "^4.14.0",
     "mongodb": "^2.2.21",
+    "mongoose": "^4.7.7",
     "promise": "^7.1.1",
     "underscore": "^1.8.3"
   }
