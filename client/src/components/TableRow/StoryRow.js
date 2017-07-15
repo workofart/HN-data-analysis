@@ -1,17 +1,19 @@
-import React from 'react';
-import {Link} from 'react-router';
+import React, { Component } from 'react';
+import {Table} from 'semantic-ui-react';
+import {Link} from 'react-router-dom';
 
-var StoryRow = React.createClass({
-    render: function () {
+class StoryRow extends Component {
+    render () {
         return (
-            <tr>
-                <td>{this.props.id}</td>
-                <td><Link to={'topStories/' + this.props.storyId}>{this.props.Text}</Link></td>
-                <td>{this.props.Kids}</td>
-                <td>{this.props.Score}</td>
-            </tr>
+            <Table.Row>
+                <Table.Cell>{this.props.id}</Table.Cell>
+                {/* <Link to={'/topStories/' + this.props.storyId}><Table.Cell>{this.props.text}</Table.Cell></Link> */}
+                <Table.Cell>{this.props.text}</Table.Cell>
+                <Table.Cell>{this.props.score}</Table.Cell>
+                <Table.Cell>{this.props.kids}</Table.Cell>
+            </Table.Row>
         )
     }
-});
+};
 
 export default StoryRow;

@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
+import {Table} from 'semantic-ui-react';
 
-var CommentRow = React.createClass({
-    render: function () {
+class CommentRow extends Component{
+    render () {
         return (
-            <tr>
-                <td>{this.props.id}</td>
-                <td>{this.props.Text}</td>
-                <td>{this.props.Kids}</td>
-            </tr>
+            <Table.Row>
+                <Table.Cell>{this.props.id}</Table.Cell>
+                <Table.Cell>{this.props.Text}</Table.Cell>
+                <Table.Cell>{this.props.Kids}</Table.Cell>
+            </Table.Row>
         )
     }
-});
+}
 
 export default CommentRow;

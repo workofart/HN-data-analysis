@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import {Grid, Row, Col, PageHeader} from 'react-bootstrap';
 import BasicInfo from './BasicInfo';
 import TableMain from '../Table/Table';
 import SideInfo from './SideInfo';
+import {Divider, Grid} from 'semantic-ui-react'
 import StoryVocabulary from './StoryVocabulary';
+import './StoryDetail.css';
 
 import CommentRow from '../TableRow/CommentRow';
 
@@ -39,13 +40,9 @@ function convertUnixDate(time) {
 }
 
 
-const TopComments = () =>
-    <Col md={6}>
-        <PageHeader>
-            Top Comments
-        </PageHeader>
-        <TableMain />
-    </Col>
+const TopComments = () => (
+    <TableMain />
+)
 
 
 class StoryDetail extends Component {
@@ -84,23 +81,24 @@ class StoryDetail extends Component {
             //     topCommentsRows.push(<CommentRow key={comment.id} commentId={comment.id} id={i+1} Text={comment.text} Kids={comment.kids.length} />);
             // });
             return (
-                <div className="App-body">
-                    <Grid fluid={true}>
-                        <Row>
-                            <Col md={6}>
+                    <Grid>
+                        <Divider />
+                        <Grid.Row>
+                            <Grid.Column width={1} />
+                            <Grid.Column width={5}>
                                 <BasicInfo id={storyDetail.id} title={storyDetail.title} date={convertUnixDate(storyDetail.time)} author={storyDetail.by} score={storyDetail.score} url={storyDetail.url} text={storyDetail.text}/>
-                            </Col>
-                            <Col md={6}>
+                            </Grid.Column>
+                            <Grid.Column width={10} textAlign='left'>
                                 <SideInfo rows={this.state.topComments}/>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col md={4}>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column width={1} />
+                            <Grid.Column width={12} textAlign='center'>
                                 <StoryVocabulary rows={this.state.storyVocabulary}/>
-                            </Col>
-                        </Row>
+                            </Grid.Column>
+                        </Grid.Row>
                     </Grid>
-                </div>
             );
         }
         return (

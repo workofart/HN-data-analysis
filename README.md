@@ -7,6 +7,7 @@ This project is a web interface for interacting with the data collected from [Ha
 
 - Javascript
 - Node.js
+- Express.js
 - React.js
 - Semantic UI
 - HTML/CSS

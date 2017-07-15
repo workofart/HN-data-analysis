@@ -5,6 +5,7 @@ var story_controller = require('./controller/story');
 var ask_controller = require('./controller/ask');
 
 router.get('/getTopStories', story_controller.getTopStories);
+router.get('/getRandomStories/:samples', story_controller.getRandomStories);
 router.get('/getStoryDetails/:id', story_controller.getStoryDetails);
 router.get('/getStoryVocabulary/:id', story_controller.getStoryVocabulary);
 router.get('/getTopComments/:id', story_controller.getTopComments);

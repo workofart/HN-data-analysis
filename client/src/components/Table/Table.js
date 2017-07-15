@@ -1,33 +1,70 @@
 import React, { Component } from 'react';
-import {Table} from 'react-bootstrap';
+import {Table} from 'semantic-ui-react';
 import CommentRow from '../TableRow/CommentRow';
+import StoryRow from '../TableRow/StoryRow';
+import Pagination from './Pagination';
 var _ = require('underscore');
-var commentJSON = require('../../../../data/test.json');
+
+
+const StoryTableHeader = () =>
+		<Table.Row>
+			<Table.HeaderCell>#</Table.HeaderCell>
+			<Table.HeaderCell>Title</Table.HeaderCell>
+			<Table.HeaderCell>Score</Table.HeaderCell>
+			<Table.HeaderCell>Decendents</Table.HeaderCell>
+		</Table.Row>
+
+const CommentTableHeader = () =>
+		<Table.Row>
+			<Table.HeaderCell>#</Table.HeaderCell>
+			<Table.HeaderCell>Comment</Table.HeaderCell>
+			<Table.HeaderCell>Comments</Table.HeaderCell>
+		</Table.Row>
 
 class TableMain extends Component {
-	render() {
+	state = {
+			// commentJSON: []
+			currentPage : 1
+	}
 
-		this.state = {
-			commentJSON: commentJSON
-		};
+	render() {	
 
 		var rows = [];
-		this.state.commentJSON.forEach(function(comment, i) {
-			rows.push(<CommentRow key={comment.id} id={i+1} Text={comment.text} Kids={comment.decendents} />);
-		});
+
+		var TableRow = this.props.tableType === 'story' ? StoryRow : CommentRow;
+		var TableHeader = this.props.tableType === 'story' ? StoryTableHeader : CommentTableHeader;
+
+		if (this.props.tableType === 'story') {
+			// console.log(this.props.rowData[0])
+			this.props.rowData.forEach(function(data, i) {
+				rows.push(<TableRow key={i+1} id={i+1} storyId={data.id} text={data.title} score={data.score} kids={data.descendants} />);
+			});
+		}
+		else {
+			this.props.rowData.forEach(function(data, i) {
+				rows.push(<TableRow key={i+1} id={data.id} text={data.text} kids={data.decendents} />);
+			});
+		}
+		rows = rows.filter(function(item) {
+			return item.props.text.toUpperCase().includes(this.props.searchQuery.toUpperCase())
+		}.bind(this))
+		
+		var rowSliceBeg = this.props.recordPerPage * (this.state.currentPage - 1)
+		var rowSliceEnd = this.state.currentPage * this.props.recordPerPage
 		return (
-					<Table responsive hover>
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Comment</th>
-								<th>Comments</th>
-							</tr>
-						</thead>
-						<tbody>
-						{rows}
-						</tbody>
-					</Table>
+			<Table size='large' color='orange'>
+				<Table.Header>
+					{TableHeader()}
+				</Table.Header>
+				<Table.Body>
+					{rows.slice(rowSliceBeg,rowSliceEnd)}
+				</Table.Body>
+
+				<Pagination colSpan={this.props.colSpan}
+							recordPerPage={this.props.recordPerPage}
+							totalRecords={this.props.rowData.length}
+							parentSwitchPage={(p) => {this.setState({currentPage : p})}}/>
+			</Table>
 		);
 	}
 }

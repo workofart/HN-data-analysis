@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import 'semantic-ui-css/semantic.min.css';
 import 'react-bootstrap/dist/react-bootstrap.min';

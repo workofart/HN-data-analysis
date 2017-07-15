@@ -1,9 +1,8 @@
-import React from 'react';
-import {Table, Panel} from 'react-bootstrap';
+import React, { Component } from 'react';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-import 'semantic-ui-css/semantic.min.css';
-import {Dimmer, Loader, Image, Segment} from 'semantic-ui-react';
+// import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+// import 'semantic-ui-css/semantic.min.css';
+import {Dimmer, Loader, Image, Segment, Accordion, Icon} from 'semantic-ui-react';
 
 
 const CustomLoader = () => (
@@ -41,18 +40,27 @@ function afterSearch(query, result) {
     // console.log('Result: ' + result);
 }
 
-var StoryVocabulary = React.createClass({
-    render: function () {
+class StoryVocabulary extends Component{
+    render () {
         if(this.props.rows && this.props.rows != -1) {
-            console.log(this.props.rows);
+            // console.log(this.props.rows);
             return (
-                <BootstrapTable data={this.props.rows} pagination={true} search={true}
-                                options={searchCallBackOptions} striped hover>
-                    <TableHeaderColumn isKey searchable={false} className='alert-info' dataField='word' width='30'>Word</TableHeaderColumn>
-                    <TableHeaderColumn dataField='freq' className='alert-info' headerAlign='center'
-                                       searchable={true}
-                                       width='20'>Frequency</TableHeaderColumn>
-                </BootstrapTable>
+                <Accordion>
+                    <Accordion.Title>
+                        <Segment inverted size='big' color='brown'>
+                            Vocabulary Table
+                        </Segment>
+                    </Accordion.Title>
+                    <Accordion.Content>
+                        <BootstrapTable data={this.props.rows} pagination={true} search={true}
+                                        options={searchCallBackOptions} striped hover>
+                            <TableHeaderColumn isKey searchable={false} className='alert-info' dataField='word' width='30'>Word</TableHeaderColumn>
+                            <TableHeaderColumn dataField='freq' className='alert-info' headerAlign='center'
+                                            searchable={true}
+                                            width='20'>Frequency</TableHeaderColumn>
+                        </BootstrapTable>
+                </Accordion.Content>
+                </Accordion>
             );
         }
         else if (this.props.rows === -1) {
@@ -65,7 +73,7 @@ var StoryVocabulary = React.createClass({
             <CustomLoader/>
         )
     }
-});
+};
 
 
 export default StoryVocabulary;

@@ -1,23 +1,54 @@
-.App {
-  text-align: center;
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
 }
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  /*height: 80px;*/
 }
 
-.App-header {
-  background-color: #BA9758;
-  height: 150px;
-  padding: 5px;
-  /*color: white;*/
+.coverPage {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#DAD299), to(#B0DAB9));
+  background-image: -webkit-linear-gradient(top, #DAD299, #B0DAB9);
+  background-image: -moz-linear-gradient(top, #DAD299, #B0DAB9);
+  background-image: linear-gradient(bottom, #DAD299, #B0DAB9);
+  background-size: 100% auto;
+  background-position: center top;
+  /*min-height: 100%;*/
+  margin-top: 0px;
+}
+
+.mainContent {
+  margin-top: 10%;
+}
+
+.ui.red.card {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.ui.padded.segment {
+  margin-top: 50px;
 }
 
 .App-intro {
-  font-size: large;
+  /*font-size: large;*/
 }
 
+.topBorderRow {
+  margin-top: 15%;
+  /*margin-bottom: 15%;*/
+}
+
+.bottomBorderRow {
+  margin-bottom: 15%;
+}
+
+.ui.card>.image, .ui.cards>.card>.image {
+  background: none;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

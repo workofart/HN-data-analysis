@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router';
+import {Link} from 'react-router-dom';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import {Dimmer, Loader, Image, Segment} from 'semantic-ui-react';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';

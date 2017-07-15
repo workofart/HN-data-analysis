@@ -1,6 +1,6 @@
 import React from 'react';
-import {Panel, Label, ListGroup, ListGroupItem} from 'react-bootstrap';
-import {Statistic, Message} from 'semantic-ui-react';
+import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {Statistic, Message, Item, Segment, List, Label, Header, Image} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 
 
@@ -20,10 +20,10 @@ import 'semantic-ui-css/semantic.min.css';
 const CustomLabel= props => {
     if(props.title != null) {
         return (
-            <Message info>
-                <Message.Header>{props.titleLabel}</Message.Header>
-                <p>{props.title}</p>
-            </Message>
+            <List.Item>
+                <Label size='huge' color='grey' horizontal>{props.titleLabel}</Label>
+                {props.title}
+            </List.Item>
         );
     }
     return (<div></div>);
@@ -33,36 +33,29 @@ const CustomPanelHeader = (
         <h1>Basic </h1>
 )
 
-// var BasicInfo = React.createClass({
-//     render: function () {
-//         return (
-//             <div>
-//                 <Panel header={CustomPanelHeader}>
-//                     <CustomLabel titleLabel='Title' title={this.props.title} />
-//                     <CustomLabel titleLabel='Id' title={this.props.id} />
-//                     <CustomLabel titleLabel='Date' title={this.props.date} />
-//                     <CustomLabel titleLabel='Author' title={this.props.author} />
-//                     <CustomLabel titleLabel='Score' title={this.props.score} />
-//                     <CustomLabel titleLabel='Url' title={this.props.url} />
-//                     <CustomLabel titleLabel='Content' title={this.props.text} />
-//                 </Panel>
-//             </div>
-//         )
-//     }
-// });
 
 var BasicInfo = React.createClass({
     render: function () {
         return (
-            <div>
-                <CustomLabel titleLabel='Title' title={this.props.title} />
-                <CustomLabel titleLabel='Id' title={this.props.id} />
-                <CustomLabel titleLabel='Date' title={this.props.date} />
-                <CustomLabel titleLabel='Author' title={this.props.author} />
-                <CustomLabel titleLabel='Score' title={this.props.score} />
-                <CustomLabel titleLabel='Url' title={this.props.url} />
-                <CustomLabel titleLabel='Content' title={this.props.text} />
-            </div>
+            <Segment textAlign='left' color='red' raised>
+                <Header as='h2'>
+                    <Image size='small' src={process.env.PUBLIC_URL + '/img/post.png' }/>
+                    Post Details
+                </Header>
+                <Item>
+                    <Item.Content>
+                        <List divided size='big'>
+                            <CustomLabel titleLabel='Title' title={this.props.title} />
+                            <CustomLabel titleLabel='Id' title={this.props.id} />
+                            <CustomLabel titleLabel='Date' title={this.props.date} />
+                            <CustomLabel titleLabel='Author' title={this.props.author} />
+                            <CustomLabel titleLabel='Score' title={this.props.score} />
+                            <CustomLabel titleLabel='Url' title={this.props.url} />
+                            <CustomLabel titleLabel='Content' title={this.props.text} />
+                        </List>
+                    </Item.Content>
+                </Item>
+            </Segment>
         )
     }
 });

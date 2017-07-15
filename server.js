@@ -30,6 +30,6 @@ if (process.env.NODE_ENV === 'production') {
 app.use('/api', api_routes);
 
 app.listen(app.get('port'), () => {
-    console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
+    console.log(`Find the server at: http://127.0.0.1:${app.get('port')}/`); // eslint-disable-line no-console
 });
 
