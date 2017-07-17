@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import {Table, Menu, Label, Icon} from 'semantic-ui-react';
+import {Link} from 'react-router-dom';
 import './StoryTable.css';
+import Pagination from '../Table/Pagination';
 
 class StoryTable extends Component {
     state = {
-        selectedTag : []
+        selectedTag : [],
+        currentPage: 1
     }
 
     // componentDidUpdate() {
@@ -52,7 +55,7 @@ class StoryTable extends Component {
             return <Label color='teal' size='medium' key={item} as='button' onClick={(e) => {this.getTagsPage(item, e)}}>{item}</Label>
         }.bind(this))
     }
-    generateTableRows() {
+    generateTableRows(start, end) {
         var stories = this.props.stories;
 
         var row = [];
@@ -62,26 +65,32 @@ class StoryTable extends Component {
             // console.log(this._intersectArr(item.tag.split(','), this.state.selectedTag.slice()))
             return (
                 <Table.Row key={i} style={{ display: this._intersectArr(item.tag.split(','), this.state.selectedTag.slice()).length == this.state.selectedTag.length || this.props.selectedTag.length === 0 ? '' : 'none'}}>
-                    <Table.Cell collapsing key={i + item.id}>{item.id}</Table.Cell>
-                    <Table.Cell collapsing key={i + item.title}>{item.title}</Table.Cell>
+                    <Table.Cell collapsing key={i + item.id}>
+                        <Link to={'/story/' + item.id}>{item.id}</Link>
+                    </Table.Cell>
+                    <Table.Cell collapsing key={i + item.title}>
+                        <Link to={'/story/' + item.id}>{item.title}</Link>
+                    </Table.Cell>
                     <Table.Cell collapsing key={i + item.tag}>{this.convertToTags(item.tag)}</Table.Cell>
                 </Table.Row>
             )
             
         }.bind(this));
-
+        row = row.slice(start, end);
         return row;
     }
 
-    generateTableBody() {
+    generateTableBody(rowSliceBeg, rowSliceEnd) {
         return (
             <Table.Body>
-                {this.generateTableRows()}
+                {this.generateTableRows(rowSliceBeg, rowSliceEnd)}
             </Table.Body>
         )
     }
     render() {
-
+        var rowSliceBeg = this.props.recordPerPage * (this.state.currentPage - 1)
+        var rowSliceEnd = this.state.currentPage * this.props.recordPerPage
+        
         return (
             <Table size='large' basic='very' celled selectable>
                 <Table.Header>
@@ -98,26 +107,12 @@ class StoryTable extends Component {
                     </Table.Row>
                 </Table.Header>
 
-                {this.generateTableBody()}
+                {this.generateTableBody(rowSliceBeg, rowSliceEnd)}
 
-                <Table.Footer>
-                <Table.Row>
-                    <Table.HeaderCell colSpan='3'>
-                    <Menu floated='right' pagination>
-                        <Menu.Item as='a' icon>
-                        <Icon name='left chevron' />
-                        </Menu.Item>
-                        <Menu.Item as='a' onClick={(e) => {console.log(e); e.target.active = true;}}>1</Menu.Item>
-                        <Menu.Item as='a' onClick={(e) => {e.active = true;}}>2</Menu.Item>
-                        <Menu.Item as='a'>3</Menu.Item>
-                        <Menu.Item as='a'>4</Menu.Item>
-                        <Menu.Item as='a' icon>
-                        <Icon name='right chevron' />
-                        </Menu.Item>
-                    </Menu>
-                    </Table.HeaderCell>
-                </Table.Row>
-                </Table.Footer>
+                <Pagination colSpan={this.props.colSpan}
+							recordPerPage={this.props.recordPerPage}
+							totalRecords={this.props.stories.length}
+							parentSwitchPage={(p) => {this.setState({currentPage : p})}}/>
             </Table>
         )
     }

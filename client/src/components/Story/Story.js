@@ -83,7 +83,13 @@ class Story extends Component {
                     </Menu.Item>
                 </Menu>
                 
-                <StoryTable stories={this.state.randomStory} setTag={(tag) =>{this.setState({selectedTag: tag})}} selectedTag={this.state.selectedTag} notificationSystem={this._notificationSystem}/>
+                <StoryTable stories={this.state.randomStory}
+                            setTag={(tag) =>{this.setState({selectedTag: tag})}}
+                            selectedTag={this.state.selectedTag} 
+                            notificationSystem={this._notificationSystem}
+                            recordPerPage={10}
+                            colSpan={4}
+                            />
             </Segment>
         )
     }

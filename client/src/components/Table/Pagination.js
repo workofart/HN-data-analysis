@@ -23,7 +23,19 @@ class Pagination extends Component {
         var numPerPage = this.props.recordPerPage;
         var numPages = n / numPerPage;
         var targetPage = this.state.currentPage + m;
-        if (targetPage <= numPages && targetPage >= 1) {
+
+        // handle last/first page switch
+        if (m == 999) {
+            console.log('Attempt to page ' + (numPages))
+            this.setState({currentPage : numPages});
+            this.props.parentSwitchPage(numPages);
+        }
+        else if (m == -999) {
+            console.log('Attempt to page ' + (1))
+            this.setState({currentPage : 1});
+            this.props.parentSwitchPage(1);
+        }
+        else if (targetPage <= numPages && targetPage >= 1) {
             console.log('Attempt to page ' + (this.state.currentPage + m))
             this.setState({currentPage : targetPage});
             this.props.parentSwitchPage(targetPage);
@@ -68,12 +80,18 @@ class Pagination extends Component {
                 <Table.Row>
                     <Table.HeaderCell colSpan={this.props.colSpan}>
                     <Menu floated='right' pagination>
+                        <Menu.Item icon onClick={ () => {this.refreshPageIcons.bind(this)(-999)}}>
+                            <Icon name='angle double left' />
+                        </Menu.Item>
                         <Menu.Item icon onClick={ () => {this.refreshPageIcons.bind(this)(-1)}}>
-                            <Icon name='left chevron' />
+                            <Icon name='angle left' />
                         </Menu.Item>
                         {totalIcons}
                         <Menu.Item icon onClick={ () => {this.refreshPageIcons.bind(this)(1)}}>
-                            <Icon name='right chevron' />
+                            <Icon name='angle right' />
+                        </Menu.Item>
+                        <Menu.Item icon onClick={ () => {this.refreshPageIcons.bind(this)(999)}}>
+                            <Icon name='angle double right' />
                         </Menu.Item>
                     </Menu>
                     </Table.HeaderCell>

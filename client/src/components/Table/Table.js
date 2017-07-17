@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {Table} from 'semantic-ui-react';
-import CommentRow from '../TableRow/CommentRow';
-import StoryRow from '../TableRow/StoryRow';
+import CommentRow from './Row/CommentRow';
+import StoryRow from './Row/StoryRow';
 import Pagination from './Pagination';
+import CustomLoader from '../Misc/CustomLoader';
 var _ = require('underscore');
 
 
@@ -24,7 +25,14 @@ const CommentTableHeader = () =>
 class TableMain extends Component {
 	state = {
 			// commentJSON: []
-			currentPage : 1
+			currentPage : 1,
+			loading: true
+	}
+
+	componentDidMount() {
+		if (this.props.rowData) {
+			this.setState({loading: false})
+		}
 	}
 
 	render() {	
@@ -33,7 +41,6 @@ class TableMain extends Component {
 
 		var TableRow = this.props.tableType === 'story' ? StoryRow : CommentRow;
 		var TableHeader = this.props.tableType === 'story' ? StoryTableHeader : CommentTableHeader;
-
 		if (this.props.tableType === 'story') {
 			// console.log(this.props.rowData[0])
 			this.props.rowData.forEach(function(data, i) {
@@ -51,21 +58,25 @@ class TableMain extends Component {
 		
 		var rowSliceBeg = this.props.recordPerPage * (this.state.currentPage - 1)
 		var rowSliceEnd = this.state.currentPage * this.props.recordPerPage
-		return (
-			<Table size='large' color='orange'>
-				<Table.Header>
-					{TableHeader()}
-				</Table.Header>
-				<Table.Body>
-					{rows.slice(rowSliceBeg,rowSliceEnd)}
-				</Table.Body>
 
-				<Pagination colSpan={this.props.colSpan}
-							recordPerPage={this.props.recordPerPage}
-							totalRecords={this.props.rowData.length}
-							parentSwitchPage={(p) => {this.setState({currentPage : p})}}/>
-			</Table>
-		);
+		if (!this.state.loading) {
+			return (
+				<Table size='large' color='orange'>
+					<Table.Header>
+						{TableHeader()}
+					</Table.Header>
+					<Table.Body>
+						{rows.slice(rowSliceBeg,rowSliceEnd)}
+					</Table.Body>
+
+					<Pagination colSpan={this.props.colSpan}
+								recordPerPage={this.props.recordPerPage}
+								totalRecords={this.props.rowData.length}
+								parentSwitchPage={(p) => {this.setState({currentPage : p})}}/>
+				</Table>
+			);
+		}
+		return <CustomLoader />
 	}
 }
 

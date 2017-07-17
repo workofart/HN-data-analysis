@@ -1,81 +1,80 @@
-import React from 'react';
-import {Table, Panel} from 'react-bootstrap';
-import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
-import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-import 'semantic-ui-css/semantic.min.css';
-import {Dimmer, Loader, Image, Segment, Accordion, Icon} from 'semantic-ui-react';
+import React, { Component } from 'react';
+import {Input, Segment, Icon, Header, Comment, Divider, Button} from 'semantic-ui-react';
+const _ = require('underscore');
 
-
-const CustomLoader = () => (
-    <Segment>
-        <Dimmer active>
-            <Loader size='massive'/>
-        </Dimmer>
-        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
-        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
-        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
-        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
-        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
-        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
-        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
-        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
-        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
-        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
-        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
-        <Image src='http://semantic-ui.com/images/wireframe/short-paragraph.png' />
-    </Segment>
-)
-
-const searchCallBackOptions = {
-    afterSearch: afterSearch,
-    clearSearch: true,
-    searchDelayTime: 350,
-    paginationShowsTotal: true,
-    sizePerPage: 8,
-    pageStartIndex: 1,
-    paginationSize: 5
+function convertUnixDate(time) {
+    var dateObj = new Date(time*1000);
+    var date = dateObj.getDate();
+    var month = dateObj.getMonth();
+    var year = dateObj.getFullYear();
+    return String(year) + '/' + String(month) + '/' + String(date);
 }
 
-function afterSearch(query, result) {
-    console.log('Search query: ' + query);
-    // console.log('Result: ' + result);
-}
+class SideInfo extends Component{
 
-var SideInfo = React.createClass({
-    render: function () {
+    handleSearch(e, data) {
+        this.setState({searchParam : data.value});
+    }
+
+    CommentList (obj) {
+        return (
+            <Comment key={obj.id} style={{ display : (String(obj.text)+ ' ' + String(obj.by)).toUpperCase().includes(this.state.searchParam.toUpperCase()) ? '' : 'none'}}>
+                <Comment.Content>
+                    <Comment.Author>
+                        <Icon name='user' />
+                        {obj.by}
+                    </Comment.Author>
+                    <Comment.Metadata>
+                        <div><Icon name='fire' />{obj.numKids}</div>
+                        <div>
+                            <Icon name='time' />
+                            {convertUnixDate(obj.time)}
+                        </div>
+                    </Comment.Metadata>
+                    <Comment.Text>
+                        {obj.text}
+                    </Comment.Text>
+                </Comment.Content>
+            </Comment>
+        ); 
+    }
+
+    state = {
+        searchParam : ''
+    }
+
+    render () {
         if(this.props.rows) {
             // Loop through dataset to generate comment replies
             for(var i = 0; i < this.props.rows.length; i++) {
                 this.props.rows[i].numKids = this.props.rows[i].kids.length;
             }
+
+            var comments = [];
+            this.props.rows.forEach(function(row) {
+                comments.push(this.CommentList(row));
+            }.bind(this));
+
             return (
-                <Accordion>
-                    <Accordion.Title>
-                        <Segment inverted size='big' color='brown'>
-                            Comments Table
-                        </Segment>
-                    </Accordion.Title>
-                    <Accordion.Content>
-                        <BootstrapTable data={this.props.rows} pagination={true} search={true}
-                                        options={searchCallBackOptions} striped hover>
-                            <TableHeaderColumn isKey searchable={false} className='alert-info' dataField='id' width='100'>Comment
-                                ID</TableHeaderColumn>
-                            <TableHeaderColumn dataField='text' className='alert-info' headerAlign='center'
-                                            searchable={true}
-                                            width='600'>Comment</TableHeaderColumn>
-                            <TableHeaderColumn dataField='numKids' className='alert-info' headerAlign='center'
-                                            searchable={false} dataSort={true}>#
-                                Replies</TableHeaderColumn>
-                        </BootstrapTable>
-                    </Accordion.Content>
-                </Accordion>
+                <Segment piled raised color='orange'>
+                    <Header floated='left' as='h3'>
+                        <Icon name='talk outline' />
+                        User Comments
+                    </Header>
+                    <Input icon size='mini' icon='search' onChange={(e, data) => {this.handleSearch.bind(this)(e, data)}} />
+                    <Button floated='right' color='red' content='Trending' icon='line chart' />
+                    <Divider />
+                    <Comment.Group>
+                        {comments}
+                    </Comment.Group>
+                </Segment>
             );
         }
         return (
-            <CustomLoader/>
+            <div></div>
         )
     }
-});
+};
 
 
 export default SideInfo;

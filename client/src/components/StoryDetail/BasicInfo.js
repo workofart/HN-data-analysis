@@ -1,29 +1,20 @@
-import React from 'react';
-import {Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
-import {Statistic, Message, Item, Segment, List, Label, Header, Image} from 'semantic-ui-react';
+import React, { Component } from 'react';
+import {Statistic, Message, Container, Statistics, Button, Popup, Icon, Item, Segment, List, Label, Header, Image} from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 
-
-// const CustomLabel = props => {
-//     if (props.title != null) {
-//         return (
-//             <ListGroup>
-//                 <ListGroupItem header={props.titleLabel}>
-//                     {props.title}
-//                 </ListGroupItem>
-//             </ListGroup>
-//         );
-//     }
-//     return (<div></div>);
-// }
-
-const CustomLabel= props => {
-    if(props.title != null) {
+const CustomLabel = props => {
+    if(props.text != null) {
         return (
-            <List.Item>
-                <Label size='huge' color='grey' horizontal>{props.titleLabel}</Label>
-                {props.title}
-            </List.Item>
+            // <Header floated={props.textAlign} as='h4'>
+            //     {props.label}
+            //     <Header.Subheader>
+            //         {props.text}
+            //     </Header.Subheader>
+            // </Header>
+            <Label circular color='blue'>
+                <Icon name={props.icon} />
+                {props.text}
+            </Label>
         );
     }
     return (<div></div>);
@@ -34,30 +25,32 @@ const CustomPanelHeader = (
 )
 
 
-var BasicInfo = React.createClass({
-    render: function () {
+class BasicInfo extends Component{
+    render () {
         return (
-            <Segment textAlign='left' color='red' raised>
-                <Header as='h2'>
-                    <Image size='small' src={process.env.PUBLIC_URL + '/img/post.png' }/>
-                    Post Details
-                </Header>
-                <Item>
-                    <Item.Content>
-                        <List divided size='big'>
-                            <CustomLabel titleLabel='Title' title={this.props.title} />
-                            <CustomLabel titleLabel='Id' title={this.props.id} />
-                            <CustomLabel titleLabel='Date' title={this.props.date} />
-                            <CustomLabel titleLabel='Author' title={this.props.author} />
-                            <CustomLabel titleLabel='Score' title={this.props.score} />
-                            <CustomLabel titleLabel='Url' title={this.props.url} />
-                            <CustomLabel titleLabel='Content' title={this.props.text} />
-                        </List>
-                    </Item.Content>
-                </Item>
-            </Segment>
+                <Segment basic textAlign='center'>
+                    
+                    {/* <CustomLabel  textAlign='left' label='Id' text={this.props.id} />
+                    <CustomLabel  textAlign='left' label='Date' text={this.props.date} />
+                    <CustomLabel  textAlign='left' label='Author' text={this.props.author} /> */}
+                    {/* <Label.Group>
+                        <CustomLabel icon='thumbs outline up' textAlign='left' label='Score' text={this.props.score} />
+                        
+                        <CustomLabel textAlign='left' label='Content' text={this.props.text} />
+                        
+                        <Popup
+                            trigger={<Label circular color='blue' icon='exchange' content='Related'/>}
+                            content={'Test related story'}
+                            hideOnScroll />
+                    </Label.Group> */}
+                    <Statistic size='mini' label='Score' value={this.props.score} />
+                    <Statistic size='mini' label='Comments' value={this.props.kids} />
+                    <Label>
+                        <Icon fitted as='a' href={this.props.url} name='linkify'/>
+                    </Label>
+                </Segment>
         )
     }
-});
+};
 
 export default BasicInfo;

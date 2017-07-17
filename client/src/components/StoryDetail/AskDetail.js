@@ -3,7 +3,7 @@ import {Grid, Row, Col, PageHeader} from 'react-bootstrap';
 import BasicInfo from './BasicInfo';
 import TableMain from '../Table/Table';
 import SideInfo from './SideInfo';
-import CommentRow from '../TableRow/CommentRow';
+import CommentRow from '../Table/Row/CommentRow';
 
 var _ = require('underscore');
 var $ = require('jquery');

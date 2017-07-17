@@ -13,7 +13,7 @@ build
 .DS_Store
 .env
 .idea
-npm-debug.log
+npm-debug.log.*
 .vscode
 
 # data files

@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import {Route, BrowserRouter, HashRouter, Switch, Link} from 'react-router-dom';
-import {Row, Col, PageHeader, Jumbotron, Alert} from 'react-bootstrap';
-import { Header, Segment, Label, Grid, Card, Image, Icon } from 'semantic-ui-react';
-import Container from './Container';
+import {Route, Switch, Link} from 'react-router-dom';
+// import {Row, Col, PageHeader, Jumbotron, Alert} from 'react-bootstrap';
+import { Header, Grid, Card, Image, Message } from 'semantic-ui-react';
 import Nav from './components/Nav/Nav'
 // import TopStoriesTable from './components/Table/TopStories';
 import TopAsksTable from './components/Ask/TopAsks';
 import StoryDetail from './components/StoryDetail/StoryDetail';
 import AskDetail from './components/StoryDetail/AskDetail';
 import Story from './components/Story/Story';
-import TopStories from './components/Story/TopStories';
+import TopStories from './components/TopStories/TopStories';
 import './App.css';
 
 const CardStack = () =>
@@ -65,8 +64,6 @@ const Home = () =>
     </div>
 
 
-
-
 const TopAsks = () =>
         <div className='mainContent'>
             <Grid>
@@ -79,17 +76,10 @@ const TopAsks = () =>
         </div>
 
 const NotFound = () =>
-    <div className="App-body">
-        <Alert bsStyle="danger">
-            <strong>Holy shit!</strong> You're on the wrong page, please try again.
-        </Alert>
-    </div>
+    <Message error style={{marginTop: '80px'}}>
+        <strong>Holy shit!</strong> You're on the wrong page, please try again.
+    </Message>
 
-// const Login = () =>
-//     <div className="well">
-//         <h1>Login Component</h1>
-//         <h4><Link to='/'>Back to Home</Link></h4>
-//     </div>
 
 class App extends Component {
     state = {
@@ -109,8 +99,8 @@ class App extends Component {
                     <Route path='/topStories' component={TopStories}/>
                     <Route path='/topAsks' component={TopAsks}/>
                     <Route path='/stories' component={Story} />
-                    <Route path='/topStories/:storyId' components={StoryDetail} />
-                    <Route path='/topAsks/:storyId' components={AskDetail} />
+                    <Route path='/story/:storyId' component={StoryDetail} />
+                    <Route path='/topAsks/:storyId' component={AskDetail} />
                     <Route component={NotFound}/>
                 </Switch>
             </div>
