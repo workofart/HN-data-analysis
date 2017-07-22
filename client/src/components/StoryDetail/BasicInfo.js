@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import {Statistic, Message, Container, Statistics, Button, Popup, Icon, Item, Segment, List, Label, Header, Image} from 'semantic-ui-react';
+import CustomLoader from '../Misc/CustomLoader';
+import ReadMore from './ReadMore';
 import 'semantic-ui-css/semantic.min.css';
+const _ = require('underscore');
 
 const CustomLabel = props => {
     if(props.text != null) {
@@ -27,29 +30,48 @@ const CustomPanelHeader = (
 
 class BasicInfo extends Component{
     render () {
-        return (
-                <Segment basic textAlign='center'>
-                    
-                    {/* <CustomLabel  textAlign='left' label='Id' text={this.props.id} />
-                    <CustomLabel  textAlign='left' label='Date' text={this.props.date} />
-                    <CustomLabel  textAlign='left' label='Author' text={this.props.author} /> */}
-                    {/* <Label.Group>
-                        <CustomLabel icon='thumbs outline up' textAlign='left' label='Score' text={this.props.score} />
+        if (Object.keys(this.props.tags).length > 0) {
+            var tags = _.uniq(this.props.tags.tag);
+
+            tags = tags.map(function(tag) {
+                return <Label key={tag} color='olive'>{tag}</Label>
+            })
+
+                return (
+                    <div>
+                    <Segment basic textAlign='center'>
                         
-                        <CustomLabel textAlign='left' label='Content' text={this.props.text} />
-                        
-                        <Popup
-                            trigger={<Label circular color='blue' icon='exchange' content='Related'/>}
-                            content={'Test related story'}
-                            hideOnScroll />
-                    </Label.Group> */}
-                    <Statistic size='mini' label='Score' value={this.props.score} />
-                    <Statistic size='mini' label='Comments' value={this.props.kids} />
-                    <Label>
-                        <Icon fitted as='a' href={this.props.url} name='linkify'/>
-                    </Label>
-                </Segment>
-        )
+                        {/* <CustomLabel  textAlign='left' label='Id' text={this.props.id} />
+                        <CustomLabel  textAlign='left' label='Date' text={this.props.date} />
+                        <CustomLabel  textAlign='left' label='Author' text={this.props.author} /> */}
+                        {/* <Label.Group>
+                            <CustomLabel icon='thumbs outline up' textAlign='left' label='Score' text={this.props.score} />
+                            
+                            <CustomLabel textAlign='left' label='Content' text={this.props.text} />
+                            
+                            <Popup
+                                trigger={<Label circular color='blue' icon='exchange' content='Related'/>}
+                                content={'Test related story'}
+                                hideOnScroll />
+                        </Label.Group> */}
+                        <Statistic size='mini' label='Score' value={this.props.score} />
+                        <Statistic size='mini' label='Comments' value={this.props.kids} />
+                        <Label>
+                            <Icon fitted as='a' href={this.props.url} name='linkify'/>
+                        </Label>
+                        <ReadMore maxDisplayLines={4} text={this.props.text}/>
+                    </Segment>
+                    <Segment basic textAlign='center'>
+                        {tags}
+                    </Segment>
+                    </div>
+            )
+        }
+        else {
+            return <CustomLoader />
+        }
+        
+        
     }
 };
 

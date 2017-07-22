@@ -28,7 +28,8 @@ class StoryDetail extends Component {
     state = {
             storyDetail : null,
             topComments: null,
-            storyVocabulary: null
+            storyVocabulary: null,
+            tags: {}
         };
 
     componentDidMount() {
@@ -40,6 +41,10 @@ class StoryDetail extends Component {
 
         $.get('/api/getTopComments/' + this.props.match.params.storyId).done(function (data) {
             this.setState({topComments: data});
+        }.bind(this));
+
+        $.get('/api/getStoryTagById/' + this.props.match.params.storyId).done(function (data) {
+            this.setState({tags: data});
         }.bind(this));
 
         $.get('/api/getStoryVocabulary/' + this.props.match.params.storyId).done(function (data) {
@@ -72,7 +77,7 @@ class StoryDetail extends Component {
                         <Grid.Row>
                             {/* <Grid.Column width={1} /> */}
                             <Grid.Column width={16}>
-                                  <BasicInfo id={storyDetail.id} kids={storyDetail.descendants} title={storyDetail.title} date={convertUnixDate(storyDetail.time)} author={storyDetail.by} score={storyDetail.score} url={storyDetail.url} text={storyDetail.text}/> 
+                                  <BasicInfo id={storyDetail.id} tags={this.state.tags} kids={storyDetail.descendants} title={storyDetail.title} date={convertUnixDate(storyDetail.time)} author={storyDetail.by} score={storyDetail.score} url={storyDetail.url} text={storyDetail.text}/> 
                              </Grid.Column>
                         </Grid.Row>
                         <Grid.Row>

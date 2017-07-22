@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {Table, Menu, Label, Icon} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
-import './StoryTable.css';
+import './TaggedStoryTable.css';
 import Pagination from '../Table/Pagination';
 
-class StoryTable extends Component {
+class TaggedStoryTable extends Component {
     state = {
         selectedTag : [],
         currentPage: 1
@@ -36,6 +36,7 @@ class StoryTable extends Component {
         });
     }
 
+
     getTagsPage(item, e) {
         var currentTags = this.props.selectedTag.slice();
         var newTags = currentTags.concat(item);
@@ -55,6 +56,7 @@ class StoryTable extends Component {
             return <Label color='teal' size='medium' key={item} as='button' onClick={(e) => {this.getTagsPage(item, e)}}>{item}</Label>
         }.bind(this))
     }
+
     generateTableRows(start, end) {
         var stories = this.props.stories;
 
@@ -64,11 +66,12 @@ class StoryTable extends Component {
             // console.log(item.tag.split(','))
             // console.log(this._intersectArr(item.tag.split(','), this.state.selectedTag.slice()))
             return (
-                <Table.Row key={i} style={{ display: this._intersectArr(item.tag.split(','), this.state.selectedTag.slice()).length == this.state.selectedTag.length || this.props.selectedTag.length === 0 ? '' : 'none'}}>
+                // <Table.Row key={i} style={{ display: this._intersectArr(item.tag.split(','), this.state.selectedTag.slice()).length == this.state.selectedTag.length || this.props.selectedTag.length === 0 ? '' : 'none'}}>
+                <Table.Row key={i}>
                     <Table.Cell collapsing key={i + item.id}>
                         <Link to={'/story/' + item.id}>{item.id}</Link>
                     </Table.Cell>
-                    <Table.Cell collapsing key={i + item.title}>
+                    <Table.Cell key={i + item.title}>
                         <Link to={'/story/' + item.id}>{item.title}</Link>
                     </Table.Cell>
                     <Table.Cell collapsing key={i + item.tag}>{this.convertToTags(item.tag)}</Table.Cell>
@@ -76,6 +79,7 @@ class StoryTable extends Component {
             )
             
         }.bind(this));
+
         row = row.slice(start, end);
         return row;
     }
@@ -118,4 +122,4 @@ class StoryTable extends Component {
     }
 }
 
-export default StoryTable
+export default TaggedStoryTable

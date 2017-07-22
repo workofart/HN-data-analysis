@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Input, Segment, Icon, Header, Comment, Divider, Button} from 'semantic-ui-react';
+import {Input, Segment, Icon, Header, Comment, Divider, Button, Container} from 'semantic-ui-react';
 const _ = require('underscore');
 
 function convertUnixDate(time) {
@@ -18,7 +18,8 @@ class SideInfo extends Component{
 
     CommentList (obj) {
         return (
-            <Comment key={obj.id} style={{ display : (String(obj.text)+ ' ' + String(obj.by)).toUpperCase().includes(this.state.searchParam.toUpperCase()) ? '' : 'none'}}>
+            <Segment key={obj.id} vertical style={{ display : (String(obj.text)+ ' ' + String(obj.by)).toUpperCase().includes(this.state.searchParam.toUpperCase()) ? '' : 'none'}}>
+            <Comment>
                 <Comment.Content>
                     <Comment.Author>
                         <Icon name='user' />
@@ -32,10 +33,11 @@ class SideInfo extends Component{
                         </div>
                     </Comment.Metadata>
                     <Comment.Text>
-                        {obj.text}
+                        <div dangerouslySetInnerHTML={{__html: obj.text}} />
                     </Comment.Text>
                 </Comment.Content>
             </Comment>
+            </Segment>
         ); 
     }
 

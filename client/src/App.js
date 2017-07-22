@@ -5,11 +5,13 @@ import {Route, Switch, Link} from 'react-router-dom';
 import { Header, Grid, Card, Image, Message } from 'semantic-ui-react';
 import Nav from './components/Nav/Nav'
 // import TopStoriesTable from './components/Table/TopStories';
-import TopAsksTable from './components/Ask/TopAsks';
+import TopAsks from './components/Ask/TopAsks';
 import StoryDetail from './components/StoryDetail/StoryDetail';
 import AskDetail from './components/StoryDetail/AskDetail';
-import Story from './components/Story/Story';
+import TaggedStory from './components/Story/TaggedStory';
 import TopStories from './components/TopStories/TopStories';
+import Users from './components/Users/Users';
+import About from './components/About/About';
 import './App.css';
 
 const CardStack = () =>
@@ -63,18 +65,6 @@ const Home = () =>
         </Grid>
     </div>
 
-
-const TopAsks = () =>
-        <div className='mainContent'>
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column>
-                        <TopAsksTable />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-        </div>
-
 const NotFound = () =>
     <Message error style={{marginTop: '80px'}}>
         <strong>Holy shit!</strong> You're on the wrong page, please try again.
@@ -98,9 +88,10 @@ class App extends Component {
                     <Route exact path='/' component={Home} />
                     <Route path='/topStories' component={TopStories}/>
                     <Route path='/topAsks' component={TopAsks}/>
-                    <Route path='/stories' component={Story} />
+                    <Route path='/stories' component={TaggedStory} />
                     <Route path='/story/:storyId' component={StoryDetail} />
-                    <Route path='/topAsks/:storyId' component={AskDetail} />
+                    <Route path='/users' component={Users} />
+                    <Route path='/about' component={About} />
                     <Route component={NotFound}/>
                 </Switch>
             </div>

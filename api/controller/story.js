@@ -15,7 +15,51 @@ var sendJsonResponse = function (res, status, content){
     res.json(content);
 }
 
+var getStoryById = function (res, item, docs, n) {
+    var id = item.id;
+    itemModel.itemModel.findOne({'id' : id},{ '_id' : 0}).lean().
+        exec(function (err, doc) {
+            if (err) {
+                console.error(err)
+            } else {
+                doc.tag = item.tag;
+                docs.push(doc);
+                if (docs.length === n) {
+                    sendJsonResponse(res, 200, docs);
+                }
+                    // if (docs.length === items.length) {
+                    // sendJsonResponse(res, 200, docs);
+                // }
+            }
+            
+    })  
+}
 
+var getRandomStories = function (samples, callback, res) {
+    var resultArr = [];
+    // var totalStories = tagsModel.tagsModel.count();
+    for (var i = 0; i < samples; i++) {
+        var skipRecords = _.random(2000);
+        tagsModel.tagsModel.findOne().skip(skipRecords).exec(function(err, result) {
+            if (err) {
+                console.error(err);
+            }
+            // console.log(result);
+            // getStoryById(res, result)
+            // sendJsonResponse(res, 200, []);
+            resultArr.push(result);
+            if (resultArr.length === samples) {
+                // console.log(resultArr);
+                var docs = [];
+                for (var i = 0; i < resultArr.length; i++) {
+                    callback(res, resultArr[i], docs, resultArr.length)
+                }
+                
+                // callback(res, resultArr);
+            }
+        })   
+    }
+}
 
 // module.exports.getTopStories = function (req, res) {
 //     var objArr = [];
@@ -39,52 +83,74 @@ var sendJsonResponse = function (res, status, content){
 
 
 module.exports.getRandomStories = function (req, res) {
-    var arr = [];
+    var resultArr = [];
+
     console.log('called getRandomStories API: ' + req.params.samples)
 
         // prevent no limit heap crash
-        if (parseInt(req.params.samples) > 0) {
-            tagsModel.tagsModel.find().lean().limit(parseInt(req.params.samples)).exec(
-            function (err, result) {
-                if (err) {
-                    console.error(err);
-                }
-                console.log(result);
-                var arrTag = result.map(function(item) {
-                    return item.tag
-                })
-                for (var i in result) {
-                    var tag = result[i].tag;
-                    // console.log(tag);
-                    itemModel.itemModel.findOne({'id' : result[i].id},{ '_id' : 0}).lean().
-                        exec(function (err, doc) {
-                            if (err) {
-                                console.error(err)
-                            } else {
-                                arr.push(doc);
-                                // console.log(arr);
-                                if (arr.length === parseInt(req.params.samples)) {
-                                    for (var i in arr) {
-                                        arr[i].tag = arrTag[i];
-                                    }
-                                    // console.log(arr);
-                                    console.log('sent back response')
-                                    sendJsonResponse(res, 200, arr);
-                                }
-                            }
-                            
-                    })
-                }
-            });
+        var samples = parseInt(req.params.samples);
+        if (samples > 0) {
+            // resultArr = getRandomStories(samples);
+            getRandomStories(samples, getStoryById, res);
+            
+                    // }, function(err, res) {
+                        // console.log(resultArr);
+                        // var arrTag = resultArr.map(function(item) {
+                            // return item.tag
+                        // })
+                        // for (var i in resultArr) {
+                            // var tag = resultArr[i].tag;
+                            // console.log(tag);
+                            // itemModel.itemModel.findOne({'id' : id},{ '_id' : 0}).lean().
+                            //     exec(function (err, doc) {
+                            //         if (err) {
+                            //             console.error(err)
+                            //         } else {
+                                        // arr.push(doc);
+                                        // // console.log(arr);
+                                        // if (arr.length === parseInt(req.params.samples)) {
+                                        //     for (var i in arr) {
+                                        //         arr[i].tag = arrTag[i];
+                                        //     }
+                                        //     // console.log(arr);
+                                        //     console.log('sent back response')
+                                            // sendJsonResponse(res, 200, arr);
+                                        // }
+                                            // return doc;
+                                    // }
+                            // })
+                        // }
+                    // });
+                    
+                // })
         }
 }
 
-module.exports.getStoryDetails = function (req, res) {
-    itemModel.itemModel.find({'id' : req.params.id}).
-        exec(function (err, doc) {
-            sendJsonResponse(res, 200, doc[0]);
-    })
+module.exports.getStoryTagById = function(req, res) {
+    console.log('getStoryTagById: ' + req.params.id)
+    if (req.params.id < 13200000) {
+        tagsModel.tagsModel.find({'id' : req.params.id}).
+            exec(function (err, doc) {
+                sendJsonResponse(res, 200, doc[0])
+            })
+    }
+    else {
+        sendJsonResponse(res, 404, 'Story not available');
+    }
+    
+    
+}
 
+module.exports.getStoryDetails = function (req, res) {
+    if (req.params.id < 13200000) {
+        itemModel.itemModel.find({'id' : req.params.id}).
+            exec(function (err, doc) {
+                sendJsonResponse(res, 200, doc[0]);
+        })
+    }
+    else {
+        sendJsonResponse(res, 404, 'Story not available');
+    }
 }
 
 module.exports.getStoryVocabulary = function (req, res) {
@@ -115,13 +181,21 @@ module.exports.getTopComments = function (req, res) {
 module.exports.getTopStories = function (req, res) {
     itemModel.itemModel.find({'type' : 'story'},{'score' : 1, 'title' : '1', 'id' : '1', 'descendants' : '1'}).
     sort({'score' : -1}).
-    limit(100).
+    limit(parseInt(req.params.n)).
     exec(function (err, docs) {
         sendJsonResponse(res, 200, docs);
     });
 
 }
 
+module.exports.getNAsks = function (req, res) {
+    itemModel.itemModel.find({'title': /Ask HN:/i})
+        .sort({'score' : -1})
+        .limit(parseInt(req.params.n))
+        .exec(function (err, docs) {
+            sendJsonResponse(res, 200, docs);
+        })
+}
 
 /**
  * @param collection
