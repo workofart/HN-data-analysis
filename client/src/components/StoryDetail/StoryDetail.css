@@ -1,5 +1,6 @@
 .storyDetailBody {
-    background: #e9ece5;
+	background: #e9ece5;
+	min-height: 100%;
 }
 
 .ui .segment{

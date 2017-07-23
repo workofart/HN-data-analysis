@@ -43,7 +43,7 @@ class TaggedStoryTable extends Component {
         // console.log(this.state.selectedTag);
         // console.log('Total items: ' + newTags);
         // console.log(newTags);
-        this.setState({selectedTag: newTags}, (newTags) =>{this.props.setTag(this.props.selectedTag.concat(item));})
+        this.setState({selectedTag: newTags}, (newTags) =>{this.props.setTag(this.props.selectedTag.concat(item)); this.setState({currentPage: 1})})
         this._addNotification(e, 'Filtering tags: [' + newTags.toString() + ']');
     }
 

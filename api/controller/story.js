@@ -179,22 +179,79 @@ module.exports.getTopComments = function (req, res) {
 }
 
 module.exports.getTopStories = function (req, res) {
-    itemModel.itemModel.find({'type' : 'story'},{'score' : 1, 'title' : '1', 'id' : '1', 'descendants' : '1'}).
-    sort({'score' : -1}).
-    limit(parseInt(req.params.n)).
-    exec(function (err, docs) {
-        sendJsonResponse(res, 200, docs);
+    itemModel.itemModel.find({'type' : 'story'},{'score' : 1, 'title' : '1', 'id' : '1', 'descendants' : '1'})
+    .lean()
+    .sort({'score' : -1})
+    .limit(parseInt(req.params.n))
+    .exec(function (err, docs) {
+        var tags = [];
+        // console.log('docs length: ' + docs.length);
+        for (var i = 0; i < docs.length; i++) {
+            var query = {'id' : docs[i].id};
+            tagsModel.tagsModel.findOne(query)
+            .lean()
+            .exec(function(err, doc) {
+                if (err) {
+                    console.log(docs[i].id)
+                }
+                if (doc && ('tag' in doc)) {
+                    tags.push(doc.tag);
+                    // console.log(i)
+                    // console.log(docs[i])
+                    // return;
+                }
+                else {
+                    tags.push('N/A')
+                }
+                // console.log('tag length: ' + tags.length);
+                if (tags.length === parseInt(req.params.n)) {
+                    for (var j = 0; j < docs.length; j++) {
+                        docs[j]['tag'] = tags[j];
+                    }
+                    sendJsonResponse(res, 200, docs);
+                }
+            })
+            
+        }
     });
-
 }
 
 module.exports.getNAsks = function (req, res) {
     itemModel.itemModel.find({'title': /Ask HN:/i})
+        .lean()
         .sort({'score' : -1})
         .limit(parseInt(req.params.n))
         .exec(function (err, docs) {
-            sendJsonResponse(res, 200, docs);
+            var tags = [];
+            // console.log('docs length: ' + docs.length);
+            for (var i = 0; i < docs.length; i++) {
+                var query = {'id' : docs[i].id};
+                tagsModel.tagsModel.findOne(query)
+                .lean()
+                .exec(function(err, doc) {
+                    if (err) {
+                        console.log(docs[i].id)
+                    }
+                    if (doc && ('tag' in doc)) {
+                        tags.push(doc.tag);
+                        // console.log(i)
+                        // console.log(docs[i])
+                        // return;
+                    }
+                    else {
+                        tags.push('N/A')
+                    }
+                    // console.log('tag length: ' + tags.length);
+                    if (tags.length === parseInt(req.params.n)) {
+                        for (var j = 0; j < docs.length; j++) {
+                            docs[j]['tag'] = tags[j];
+                        }
+                        sendJsonResponse(res, 200, docs);
+                    }
+                })
+            }
         })
+        
 }
 
 /**

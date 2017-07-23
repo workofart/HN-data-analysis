@@ -1,0 +1,12 @@
+.ui.brown.raised.segment {
+    margin-top: 10%;
+}
+
+
+.ui.aboutPageSegment.padded.segment {
+    background: #e9ece5;
+    background-size: 100% auto;
+    background-position: center top;
+    min-height: 100%;
+    min-width: 100%;
+}

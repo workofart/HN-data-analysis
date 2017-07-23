@@ -93,7 +93,7 @@ class Story extends Component {
     render() {
 
         return (
-            <Segment padded basic>
+            <Segment padded basic className='pageSegment'>
                 <NotificationSystem ref="notificationSystem" />
                 <Header as='h2' icon textAlign='center'>
                     <Icon name='tags'/>

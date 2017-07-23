@@ -6,6 +6,7 @@ import './TopStories.css';
 import $ from 'jquery';
 
 var arr = [];
+var cachedStories = [];
 const options = [
   {
     key: '10',
@@ -39,14 +40,17 @@ class TopStories extends Component {
     componentDidMount() {
        $.get('/api/getTopStories/' + this.state.topN).done(function(data) {
             this.setState({topStories: data});
+            cachedStories = data;
         }.bind(this));
     }
 
-    componentDidUpdate() {
-        // $.get('/api/getTopStories/' + this.state.topN).done(function(data) {
-        //     this.setState({topStories: data});
-        // }.bind(this));
-        return true
+    _intersectArr(a, b) {
+        var t;
+        if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+        var result = a.filter(function (e) {
+            return b.indexOf(e) > -1;
+        });
+        return result;
     }
 
     handleNumberPost (e, data) {
@@ -63,18 +67,34 @@ class TopStories extends Component {
         topStories: [],
         samples: 0,
         searchQuery: '',
-        topN : 10
+        topN : 10,
+        selectedTag: []
     }
 
     handleSearch(e, data) {
         this.setState({searchQuery : data.value});
     }
 
+    filterUnTaggedStories () {
+        console.log(this.state.selectedTag)
+        // filter out the stories with the non-selected tags
+        if (this.state.selectedTag.length > 0) {
+            var filteredStory = this.state.topStories.filter(function(story) {
+                var tags = story.tag.toString().split(',')
+                return this._intersectArr(tags, this.state.selectedTag).length === this.state.selectedTag.length ? true : false
+            }.bind(this))
+            this.setState({topStories : filteredStory});
+        }
+        else {
+            this.setState({topStories: cachedStories})
+        }
+    }
+
     render() {
          
 
              return (
-                    <Segment basic padded>
+                    <Segment basic padded className='pageSegment'>
                         <Header as='h2' icon textAlign='center'>
                             <Icon name='star' loading/>
                             Top Stories
@@ -98,9 +118,11 @@ class TopStories extends Component {
                         
                         <StoryTable tableType='story'
                                     rowData={this.state.topStories}
-                                    colSpan={4}
+                                    colSpan={5}
                                     recordPerPage={10}
                                     searchQuery={this.state.searchQuery}
+                                    selectedTag={this.state.selectedTag}
+                                    setTag={(tag) =>{this.setState({selectedTag: tag}, () => { this.filterUnTaggedStories()})}}
                                     /> 
                         
                     </Segment>

@@ -6,9 +6,16 @@ const pageButtons = 5;
 class Pagination extends Component {
 
     state = {
-        currentPage : 1
+        currentPage : this.props.currentPage
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.currentPage != this.props.currentPage) {
+            // console.log(this.props);
+            // console.log(nextProps);
+            this.setState({currentPage: nextProps.currentPage});
+        }
+    }
 
     handlePageSwitch(e, target) {
         console.log('Target page: ' + target.children);
@@ -62,14 +69,15 @@ class Pagination extends Component {
 
         var n = this.props.totalRecords;
         var numPerPage = this.props.recordPerPage;
-        var numPages = Math.round(n / numPerPage);
+        var numPages = Math.round(n / numPerPage) < 1 ? 1 : Math.round(n / numPerPage);
 
         // console.log(currentPage);
 
         var totalIcons = [];
         var pageStart = Math.max(1, Math.floor(this.state.currentPage / (pageButtons + 1))  * pageButtons + 1);
         var pageEnd = Math.min(numPages, Math.ceil(this.state.currentPage / pageButtons) * pageButtons);
-
+        console.log('pageStart: ' + pageStart)
+        console.log('pageEnd: ' + pageEnd)
         for(var i = pageStart; i <= pageEnd; i ++) {
             var obj = <Menu.Item key={i} active={this.state.currentPage == i} onClick={ (e, target) => {this.handlePageSwitch(e, target) }}>{i}</Menu.Item>
             totalIcons.push(obj)

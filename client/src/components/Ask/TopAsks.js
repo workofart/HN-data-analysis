@@ -30,17 +30,28 @@ const options = [
     content: '100',
   },
 ]
+var cachedStories = [];
 
 
 class TopAsks extends Component {
     state = {
         asks : [],
         searchQuery : '',
-        topN: 10
+        topN: 10,
+        selectedTag: []
     }
 
     handleSearch(e, data) {
         this.setState({searchQuery : data.value});
+    }
+
+    _intersectArr(a, b) {
+        var t;
+        if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+        var result = a.filter(function (e) {
+            return b.indexOf(e) > -1;
+        });
+        return result;
     }
 
     componentDidMount() {
@@ -59,11 +70,26 @@ class TopAsks extends Component {
         
     }
 
+    filterUnTaggedStories () {
+        console.log(this.state.selectedTag)
+        // filter out the stories with the non-selected tags
+        if (this.state.selectedTag.length > 0) {
+            var filteredStory = this.state.asks.filter(function(story) {
+                var tags = story.tag.toString().split(',')
+                return this._intersectArr(tags, this.state.selectedTag).length === this.state.selectedTag.length ? true : false
+            }.bind(this))
+            this.setState({asks : filteredStory});
+        }
+        else {
+            this.setState({asks: cachedStories})
+        }
+    }
+
 
     render() {
         if (this.state.asks.length > 0) {
             return (
-                <Segment basic padded>
+                <Segment basic padded className='pageSegment'>
                 <Header as='h2' icon textAlign='center'>
                     <Icon name='question' loading/>
                     Top Asks
@@ -86,9 +112,11 @@ class TopAsks extends Component {
                 </Header>
                 <AskTable tableType='story'
                             rowData={this.state.asks}
-                            colSpan={4}
+                            colSpan={5}
                             recordPerPage={10}
                             searchQuery={this.state.searchQuery}
+                            selectedTag={this.state.selectedTag}
+                            setTag={(tag) =>{this.setState({selectedTag: tag}, () => { this.filterUnTaggedStories()})}}
                             /> 
                 
             </Segment>

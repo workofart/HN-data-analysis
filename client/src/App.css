@@ -1,8 +1,5 @@
-html {
+html, body, .App, div#root {
   height: 100%;
-}
-body {
-  min-height: 100%;
 }
 
 .App-logo {
@@ -10,6 +7,15 @@ body {
   /*height: 80px;*/
 }
 
+
+.ui.basic.padded.pageSegment.segment {
+    background: #e9ece5;
+    background-size: 100% auto;
+    background-position: center top;
+    min-height: 100%;
+}
+
+  
 .coverPage {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#DAD299), to(#B0DAB9));
   background-image: -webkit-linear-gradient(top, #DAD299, #B0DAB9);
@@ -17,7 +23,7 @@ body {
   background-image: linear-gradient(bottom, #DAD299, #B0DAB9);
   background-size: 100% auto;
   background-position: center top;
-  /*min-height: 100%;*/
+  min-height: 100%;
   margin-top: 0px;
 }
 
@@ -30,7 +36,7 @@ body {
   padding-bottom: 10px;
 }
 .ui.padded.segment {
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 .App-intro {
