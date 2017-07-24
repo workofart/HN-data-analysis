@@ -217,13 +217,13 @@ module.exports.getTopStories = function (req, res) {
 }
 
 module.exports.getNAsks = function (req, res) {
-    itemModel.itemModel.find({'title': /Ask HN:/i})
+    itemModel.itemModel.find({'title': /Ask HN:/i, 'type': 'story'},{'score' : 1, 'title' : '1', 'id' : '1', 'descendants' : '1'})
         .lean()
         .sort({'score' : -1})
         .limit(parseInt(req.params.n))
         .exec(function (err, docs) {
             var tags = [];
-            // console.log('docs length: ' + docs.length);
+            console.log('docs length: ' + docs.length);
             for (var i = 0; i < docs.length; i++) {
                 var query = {'id' : docs[i].id};
                 tagsModel.tagsModel.findOne(query)

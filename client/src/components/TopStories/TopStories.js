@@ -58,6 +58,7 @@ class TopStories extends Component {
         this.setState({topN : parseInt(data.value)}, function() {
              $.get('/api/getTopStories/' + this.state.topN).done(function(data) {
                 this.setState({topStories: data});
+                cachedStories = data;
             }.bind(this));
         })
         

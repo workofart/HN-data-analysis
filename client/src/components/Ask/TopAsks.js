@@ -57,6 +57,7 @@ class TopAsks extends Component {
     componentDidMount() {
         $.get('/api/getNAsks/' + this.state.topN).done(function (data) {
             this.setState({asks : data});
+            cachedStories = data;
         }.bind(this));
     }
     
@@ -65,6 +66,7 @@ class TopAsks extends Component {
         this.setState({topN : parseInt(data.value)}, function() {
              $.get('/api/getNAsks/' + this.state.topN).done(function(data) {
                 this.setState({asks: data});
+                cachedStories = data;
             }.bind(this));
         })
         
