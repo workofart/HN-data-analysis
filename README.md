@@ -4,7 +4,7 @@
 This project is a web interface for interacting with the data collected from [HackerNews](https://news.ycombinator.com/) and utilizes the analysis from [this](https://github.com/workofart/HackerNews) project
 
 ### Demo:
-![Demo](https://raw.githubusercontent.com/workofart/HN-data-analysis/master/other/demo_v1.gif)
+![Demo](https://raw.githubusercontent.com/workofart/HN-data-analysis/master/other/demo_v2.gif)
 
 ### Languages & Frameworks:
 
