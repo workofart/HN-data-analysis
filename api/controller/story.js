@@ -35,7 +35,7 @@ var getStoryById = function (res, item, docs, n) {
     })  
 }
 
-var getRandomStories = function (samples, callback, res) {
+var processStories = function (samples, callback, res) {
     var resultArr = [];
     // var totalStories = tagsModel.tagsModel.count();
     for (var i = 0; i < samples; i++) {
@@ -61,25 +61,6 @@ var getRandomStories = function (samples, callback, res) {
     }
 }
 
-// module.exports.getTopStories = function (req, res) {
-//     var objArr = [];
-//
-//     // var readStories =
-//     var files = fs.readdirSync(storyPath);
-//     files.forEach(file => {
-//         // console.log(file);
-//         data = fs.readFileSync(storyPath + "/" + file, 'utf8')
-//         temp = JSON.parse(data);
-//         obj = {
-//             'descendants' : temp.descendants,
-//             'score' : temp.score,
-//             'id' : temp.id,
-//             'title' : temp.title
-//         }
-//         objArr.push(obj);
-//     });
-//     sendJsonResponse(res, 200, objArr);
-// }
 
 
 module.exports.getRandomStories = function (req, res) {
@@ -91,38 +72,7 @@ module.exports.getRandomStories = function (req, res) {
         var samples = parseInt(req.params.samples);
         if (samples > 0) {
             // resultArr = getRandomStories(samples);
-            getRandomStories(samples, getStoryById, res);
-            
-                    // }, function(err, res) {
-                        // console.log(resultArr);
-                        // var arrTag = resultArr.map(function(item) {
-                            // return item.tag
-                        // })
-                        // for (var i in resultArr) {
-                            // var tag = resultArr[i].tag;
-                            // console.log(tag);
-                            // itemModel.itemModel.findOne({'id' : id},{ '_id' : 0}).lean().
-                            //     exec(function (err, doc) {
-                            //         if (err) {
-                            //             console.error(err)
-                            //         } else {
-                                        // arr.push(doc);
-                                        // // console.log(arr);
-                                        // if (arr.length === parseInt(req.params.samples)) {
-                                        //     for (var i in arr) {
-                                        //         arr[i].tag = arrTag[i];
-                                        //     }
-                                        //     // console.log(arr);
-                                        //     console.log('sent back response')
-                                            // sendJsonResponse(res, 200, arr);
-                                        // }
-                                            // return doc;
-                                    // }
-                            // })
-                        // }
-                    // });
-                    
-                // })
+            processStories(samples, getStoryById, res);
         }
 }
 
@@ -137,8 +87,19 @@ module.exports.getStoryTagById = function(req, res) {
     else {
         sendJsonResponse(res, 404, 'Story not available');
     }
-    
-    
+}
+
+module.exports.getStoryByTags = function(req, res) {
+    var tags = req.params.tags.toString().replace('|', '/').split(',')
+    console.log('getStoryByTags: ' + tags)
+    tagsModel.tagsModel.find({'tag': {$all : tags}})
+        .limit(20)
+        .exec(function(err, docs) {
+            var docArr = [];
+            for (var i = 0; i < docs.length; i++) {
+                getStoryById(res, docs[i], docArr, docs.length);
+            }
+        })
 }
 
 module.exports.getStoryDetails = function (req, res) {
@@ -169,9 +130,9 @@ module.exports.getStoryVocabulary = function (req, res) {
 
 module.exports.getTopComments = function (req, res) {
     var comments = [];
-    itemModel.itemModel.findOne({'id' : req.params.id}).
+    itemModel.itemModel.findOne({'id' : req.params.id, 'deleted' : { '$exists' : false}}).
     exec(function (err, doc) {
-        itemModel.itemModel.find({'id' : {'$in' : doc.kids}}).
+        itemModel.itemModel.find({'id' : {'$in' : doc.kids}, 'deleted' : { '$exists' : false}}).
             exec(function (err, comments) {
             sendJsonResponse(res, 200, comments);
         });
@@ -179,7 +140,7 @@ module.exports.getTopComments = function (req, res) {
 }
 
 module.exports.getTopStories = function (req, res) {
-    itemModel.itemModel.find({'type' : 'story'},{'score' : 1, 'title' : '1', 'id' : '1', 'descendants' : '1'})
+    itemModel.itemModel.find({'type' : 'story', 'deleted' : { '$exists' : false}},{'score' : 1, 'title' : '1', 'id' : '1', 'descendants' : '1'})
     .lean()
     .sort({'score' : -1})
     .limit(parseInt(req.params.n))
@@ -217,11 +178,14 @@ module.exports.getTopStories = function (req, res) {
 }
 
 module.exports.getNAsks = function (req, res) {
-    itemModel.itemModel.find({'title': /Ask HN:/i, 'type': 'story'},{'score' : 1, 'title' : '1', 'id' : '1', 'descendants' : '1'})
+    itemModel.itemModel.find({'title': /Ask HN:/i, 'type': 'story', 'deleted' : { '$exists' : false}},{'score' : 1, 'title' : '1', 'id' : '1', 'descendants' : '1'})
         .lean()
         .sort({'score' : -1})
         .limit(parseInt(req.params.n))
         .exec(function (err, docs) {
+            if (err) {
+                console.error(err);
+            }
             var tags = [];
             console.log('docs length: ' + docs.length);
             for (var i = 0; i < docs.length; i++) {

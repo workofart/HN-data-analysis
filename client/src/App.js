@@ -17,7 +17,7 @@ import './App.css';
 const CardStack = () =>
     <Card.Group itemsPerRow={3}>
         {CardTemplate('Top Stories/Comments', 'Statistics', 'Based on calculated scores of posts and comments, filtered junk comment', 'trending', '/topStories')}
-        {CardTemplate('Tagged/Classified Posts', 'Natural Language Processing', 'Find the genre of posts that interests you the most and forget crawling through tens and hundreds of posts to find one that you enjoy reading', 'tag', '/stories')}
+        {CardTemplate('Tagged/Classified Posts', 'Natural Language Processing', 'Find the genre of posts that interests you the most and forget crawling through tens and hundreds of posts to find one that you enjoy reading', 'tag', '/tags')}
         {CardTemplate('Most Influential Users', 'Statistics', 'Some users post rich content, and some users are experts in JavaScript, find who they are', 'topUser', '/topUsers')}
     </Card.Group>
 
@@ -34,19 +34,19 @@ const CardTemplate = (header, meta, desc, img, link, color='red') =>
 const Home = () =>
     <div className='coverPage'>
         <Grid centered relaxed>
-            <Grid.Row columns='3' className='topBorderRow' verticalAlign='top'>
-                <Grid.Column color='orange'/>
-                <Grid.Column color='yellow'/>
-                <Grid.Column color='orange'/>
-            </Grid.Row>
-            <Grid.Row verticalAlign='middle'>
+            <Grid.Row className='topBorderRow'  verticalAlign='top'>
                 <Grid.Column width={3} />
                 <Grid.Column width={10} textAlign='center'>
-                    <Header as='h2'>
+                    <Header as='h1'>
                         HackerNews Data Analysis
                     </Header>
                 </Grid.Column>
                 <Grid.Column width={3}/>
+            </Grid.Row>
+            <Grid.Row columns='3' verticalAlign='middle'>
+                <Grid.Column color='orange'/>
+                <Grid.Column color='yellow'/>
+                <Grid.Column color='orange'/>
             </Grid.Row>
             <Grid.Row verticalAlign='middle'>
                 {/*<Grid.Column width={3} />*/}
@@ -88,7 +88,7 @@ class App extends Component {
                     <Route exact path='/' component={Home} />
                     <Route path='/topStories' component={TopStories}/>
                     <Route path='/topAsks' component={TopAsks}/>
-                    <Route path='/stories' component={TaggedStory} />
+                    <Route path='/tags' component={TaggedStory} />
                     <Route path='/story/:storyId' component={StoryDetail} />
                     <Route path='/users' component={Users} />
                     <Route path='/about' component={About} />

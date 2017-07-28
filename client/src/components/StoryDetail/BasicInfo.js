@@ -3,6 +3,8 @@ import {Statistic, Message, Container, Statistics, Button, Popup, Icon, Item, Se
 import CustomLoader from '../Misc/CustomLoader';
 import ReadMore from './ReadMore';
 import 'semantic-ui-css/semantic.min.css';
+import './BasicInfo.css';
+
 const _ = require('underscore');
 
 const CustomLabel = props => {
@@ -56,8 +58,8 @@ class BasicInfo extends Component{
                         </Label.Group> */}
                         <Statistic size='mini' label='Score' value={this.props.score} />
                         <Statistic size='mini' label='Comments' value={this.props.kids} />
-                        <Label>
-                            <Icon fitted as='a' href={this.props.url} name='linkify'/>
+                        <Label circular color='blue' as='a' href={this.props.url}>
+                            <Icon fitted name='linkify'/>
                         </Label>
                         <ReadMore maxDisplayLines={4} text={this.props.text}/>
                     </Segment>

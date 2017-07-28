@@ -7,6 +7,9 @@ html, body, .App, div#root {
   /*height: 80px;*/
 }
 
+h1.ui.header {
+  font-size: 6rem;
+}
 
 .ui.basic.padded.pageSegment.segment {
     background: #e9ece5;

@@ -32,12 +32,12 @@ class Pagination extends Component {
         var targetPage = this.state.currentPage + m;
 
         // handle last/first page switch
-        if (m == 999) {
+        if (m === 999) {
             console.log('Attempt to page ' + (numPages))
             this.setState({currentPage : numPages});
             this.props.parentSwitchPage(numPages);
         }
-        else if (m == -999) {
+        else if (m === -999) {
             console.log('Attempt to page ' + (1))
             this.setState({currentPage : 1});
             this.props.parentSwitchPage(1);
@@ -79,7 +79,7 @@ class Pagination extends Component {
         console.log('pageStart: ' + pageStart)
         console.log('pageEnd: ' + pageEnd)
         for(var i = pageStart; i <= pageEnd; i ++) {
-            var obj = <Menu.Item key={i} active={this.state.currentPage == i} onClick={ (e, target) => {this.handlePageSwitch(e, target) }}>{i}</Menu.Item>
+            var obj = <Menu.Item key={i} active={this.state.currentPage === i} onClick={ (e, target) => {this.handlePageSwitch(e, target) }}>{i}</Menu.Item>
             totalIcons.push(obj)
         }
 

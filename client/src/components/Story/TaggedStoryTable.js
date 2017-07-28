@@ -3,6 +3,7 @@ import {Table, Menu, Label, Icon} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
 import './TaggedStoryTable.css';
 import Pagination from '../Table/Pagination';
+const _ = require('underscore');
 
 class TaggedStoryTable extends Component {
     state = {
@@ -52,7 +53,7 @@ class TaggedStoryTable extends Component {
     }
 
     convertToTags(tags) {
-        return tags.split(',').map(function(item) {
+        return  _.uniq(tags.split(',')).map(function(item) {
             return <Label color='teal' size='medium' key={item} as='button' onClick={(e) => {this.getTagsPage(item, e)}}>{item}</Label>
         }.bind(this))
     }

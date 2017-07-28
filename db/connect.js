@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var url = 'mongodb://localhost:27017/hn-db';
+var url = 'mongodb://127.0.0.1:27017/hn-db';
 var db = mongoose.createConnection(url);
 
 var _ = require('underscore');

@@ -14,7 +14,7 @@ const StoryTableHeader = (props) =>
 			<Table.HeaderCell>Score</Table.HeaderCell>
 			<Table.HeaderCell>Decendents</Table.HeaderCell>
 			<Table.HeaderCell collapsing>
-				Tag
+				Tag{' '}
 				<Label color='blue' style={{ display : props.props.selectedTag != [] ? '' : 'none'}}>
 					<Icon name='filter' />{props.props.selectedTag.toString()}
 					<Icon name='delete' onClick={ () => {props.clearTags()}}/>

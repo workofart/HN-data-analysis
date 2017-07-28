@@ -18,8 +18,10 @@ class CustomTagCard extends Component {
     }
 
     addToSelection(props) {
-        this.props.addToSelection(props.category);
-        this.setState({active: !this.state.active})
+        if (this.props.addToSelection(props.category) === true) {
+            this.setState({active: !this.state.active})
+        }
+        
     }
 
     

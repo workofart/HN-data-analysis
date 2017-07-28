@@ -1,0 +1,4 @@
+.ui.red.label, .ui.red.labels .label {
+    right: 10px;
+    position: fixed;
+}

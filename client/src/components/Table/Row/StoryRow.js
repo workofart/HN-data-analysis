@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Table, Label} from 'semantic-ui-react';
 import {Link} from 'react-router-dom';
+const _ = require('underscore');
 
 class StoryRow extends Component {
 
@@ -9,7 +10,7 @@ class StoryRow extends Component {
     }
 
     convertToTags(tags) {
-        return String(tags).split(',').map(function(item) {
+        return _.uniq(String(tags).split(',')).map(function(item) {
             return <Label color='teal' size='medium' key={item} as='button' onClick={(e) => {this.getTagsPage(item, e)}}>{item}</Label>
         }.bind(this))
     }

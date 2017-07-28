@@ -7,3 +7,7 @@
     -ms-transform-origin:0 0;
     transform-origin:0 0; */
 }
+
+.ui.five.cards>.card {
+    word-wrap: break-word;
+}

@@ -40,6 +40,12 @@ class StoryDetail extends Component {
         }.bind(this));
 
         $.get('/api/getTopComments/' + this.props.match.params.storyId).done(function (data) {
+            data = data.filter(function(item) {
+                if (Object.keys(data).indexOf('deleted') != -1) {
+                    return false;
+                }
+                return true ;
+            })
             this.setState({topComments: data});
         }.bind(this));
 
