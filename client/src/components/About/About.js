@@ -80,8 +80,6 @@ class About extends Component {
                         </a>
                     </Container>
                 </Segment>
-
-
             </Segment >
         )
     }
