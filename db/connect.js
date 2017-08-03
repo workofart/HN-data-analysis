@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
-var url = 'mongodb://127.0.0.1:27017/hn-db';
+var url = 'mongodb://127.0.0.1:27017/hn-db?connectTimeoutMS=300000';
 var db = mongoose.createConnection(url);
 
 var _ = require('underscore');
 
+mongoose.set('debug', true)
 
 // module.exports.getCollection = function(collName, callback) {
 //     Mongo.connect(url+db, function (err, db) {

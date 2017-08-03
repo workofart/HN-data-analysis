@@ -18,6 +18,15 @@ h1.ui.header {
     min-height: 100%;
 }
 
+.ui.visible.push.sidebar {
+   padding-top: 50px; 
+}
+
+.ui.slide.along.sidebar {
+  background-color: white;
+  padding: 30px;
+}
+
   
 .coverPage {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#DAD299), to(#B0DAB9));
@@ -53,6 +62,10 @@ h1.ui.header {
 
 .bottomBorderRow {
   margin-bottom: 15%;
+}
+
+.ui.pushable.segment {
+  margin-top: 0px;
 }
 
 .ui.card>.image, .ui.cards>.card>.image {

@@ -17,8 +17,14 @@ var sendJsonResponse = function (res, status, content){
 
 var getStoryById = function (res, item, docs, n) {
     var id = item.id;
-    itemModel.itemModel.findOne({'id' : id},{ '_id' : 0}).lean().
-        exec(function (err, doc) {
+    itemModel.itemModel.findOne({'id' : id,
+                                'descendants' : { '$gt' : 0},
+                                'deleted' : { '$exists' : false},
+                                'dead': { '$exists' : false}},
+                                { '_id' : 0}
+                            )
+        .lean()
+        .exec(function (err, doc) {
             if (err) {
                 console.error(err)
             } else {
@@ -116,7 +122,7 @@ module.exports.getStoryDetails = function (req, res) {
 
 module.exports.getStoryVocabulary = function (req, res) {
     console.log('Searching for id: ' + req.params.id);
-    vocabularyModel.vocabularyModel.find({'id': req.params.id},).lean().
+    vocabularyModel.vocabularyModel.find({'id': req.params.id}).lean().
         exec(function (err, doc) {
             if (doc[0]) {
                 sendJsonResponse(res, 200, doc[0])
@@ -128,19 +134,50 @@ module.exports.getStoryVocabulary = function (req, res) {
     });
 }
 
+module.exports.getStoriesByTitle = function (req, res) {
+    console.log(req.params.query);
+    var query = req.params.query.replace('|', ' ');
+    itemModel.itemModel.find({'title' : new RegExp(query, 'i'), 
+                                'type': 'story', 
+                                'descendants' : { '$gt' : 0},
+                                'deleted' : { '$exists' : false},
+                                'dead': { '$exists' : false}
+                            },
+                            {'score' : 1,
+                            'title' : 1,
+                            'id' : 1,
+                            'descendants' : 1
+                            })
+    .limit(20)
+    .lean()
+    .exec(function (err, docs) {
+        sendJsonResponse(res, 200, docs);
+    })
+}
+
 module.exports.getTopComments = function (req, res) {
     var comments = [];
-    itemModel.itemModel.findOne({'id' : req.params.id, 'deleted' : { '$exists' : false}}).
-    exec(function (err, doc) {
-        itemModel.itemModel.find({'id' : {'$in' : doc.kids}, 'deleted' : { '$exists' : false}}).
-            exec(function (err, comments) {
+    itemModel.itemModel.findOne({'id' : req.params.id, 
+                                'deleted' : { '$exists' : false},
+                                'dead': { '$exists' : false}
+                                })
+    .lean()
+    .exec(function (err, doc) {
+        console.log(doc);
+        itemModel.itemModel.find({'id' : {'$in' : doc.kids},
+                                'deleted' : { '$exists' : false}})
+        .exec(function (err, comments) {
             sendJsonResponse(res, 200, comments);
         });
     });
 }
 
 module.exports.getTopStories = function (req, res) {
-    itemModel.itemModel.find({'type' : 'story', 'deleted' : { '$exists' : false}},{'score' : 1, 'title' : '1', 'id' : '1', 'descendants' : '1'})
+    itemModel.itemModel.find({'type' : 'story',
+    'descendants' : { '$gt' : 0},
+    'deleted' : { '$exists' : false},
+    'dead' : { '$exists' : false}},
+    {'score' : 1, 'title' : '1', 'id' : '1', 'descendants' : '1'})
     .lean()
     .sort({'score' : -1})
     .limit(parseInt(req.params.n))
@@ -178,7 +215,11 @@ module.exports.getTopStories = function (req, res) {
 }
 
 module.exports.getNAsks = function (req, res) {
-    itemModel.itemModel.find({'title': /Ask HN:/i, 'type': 'story', 'deleted' : { '$exists' : false}},{'score' : 1, 'title' : '1', 'id' : '1', 'descendants' : '1'})
+    itemModel.itemModel.find({'title': /Ask HN:/i,
+    'type': 'story',
+    'descendants' : { '$gt' : 0},
+    'deleted' : { '$exists' : false}},
+    {'score' : 1, 'title' : '1', 'id' : '1', 'descendants' : '1'})
         .lean()
         .sort({'score' : -1})
         .limit(parseInt(req.params.n))

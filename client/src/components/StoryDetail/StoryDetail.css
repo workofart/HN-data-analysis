@@ -1,6 +1,7 @@
 .storyDetailBody {
 	background: #e9ece5;
-	min-height: 100%;
+	 min-height: 928px; 
+	/* padding-top: 200px; */
 }
 
 .ui .segment{
@@ -16,7 +17,7 @@
 	line-height: 52px;
 	margin-bottom: 48px;
     text-align: center;
-    padding-top: 80px;
+    padding-top: 80px; 
 }
 
 .authorSubheader {

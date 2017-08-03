@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {Input, Segment, Icon, Header, Comment, Divider, Button, Container} from 'semantic-ui-react';
+import NotificationSystem from 'react-notification-system';
+import './SideInfo.css';
 const _ = require('underscore');
 
 function convertUnixDate(time) {
@@ -12,8 +14,27 @@ function convertUnixDate(time) {
 
 class SideInfo extends Component{
 
+    componentDidMount() {
+        this._notificationSystem = this.refs.notificationSystem;
+    }
     handleSearch(e, data) {
         this.setState({searchParam : data.value});
+    }
+
+    sortComments(e) {
+        var sorted_comments = _.sortBy(this.state.comments, 'numKids').reverse();
+        this.setState({comments : sorted_comments});
+        this._addNotification(e, 'Comments sorted by popularity');
+    }
+
+    _addNotification (event, msg) {
+        event.preventDefault();
+        this._notificationSystem.addNotification({
+        message: msg,
+        level: 'info',
+        position: 'tc',
+        autoDismiss: 2
+        });
     }
 
     CommentList (obj) {
@@ -42,32 +63,36 @@ class SideInfo extends Component{
     }
 
     state = {
-        searchParam : ''
+        searchParam : '',
+        comments: this.props.rows
     }
 
     render () {
-        if(this.props.rows) {
+        var comments = this.props.rows;
+        if(comments && comments.length != 0) {
             // Loop through dataset to generate comment replies
-            for(var i = 0; i < this.props.rows.length; i++) {
-                this.props.rows[i].numKids = this.props.rows[i].kids.length;
+            
+            for(var i = 0; i < comments.length; i++) {
+                comments[i].numKids = comments[i].kids.length;
             }
-
-            var comments = [];
-            this.props.rows.forEach(function(row) {
-                comments.push(this.CommentList(row));
+            
+            var commentsArr = [];
+            comments.forEach(function(row) {
+                commentsArr.push(this.CommentList(row));
             }.bind(this));
 
             return (
                 <Segment piled raised color='orange'>
+                    <NotificationSystem ref="notificationSystem" />
                     <Header floated='left' as='h3'>
                         <Icon name='talk outline' />
                         User Comments
                     </Header>
                     <Input icon size='mini' icon='search' onChange={(e, data) => {this.handleSearch.bind(this)(e, data)}} />
-                    <Button floated='right' color='red' content='Trending' icon='line chart' />
+                    <Button floated='right' color='red' content='Trending' icon='line chart' onClick={this.sortComments.bind(this)} />
                     <Divider />
                     <Comment.Group>
-                        {comments}
+                        {commentsArr}
                     </Comment.Group>
                 </Segment>
             );

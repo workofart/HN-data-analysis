@@ -12,6 +12,8 @@ router.get('/getStoryVocabulary/:id', story_controller.getStoryVocabulary);
 router.get('/getTopComments/:id', story_controller.getTopComments);
 router.get('/getNAsks/:n', story_controller.getNAsks);
 router.get('/getStoryByTags/:tags', story_controller.getStoryByTags);
+router.get('/getStoriesByTitle/:query', story_controller.getStoriesByTitle);
+
 
 router.get('/getTopAsks', ask_controller.getTopAsks);
 router.get('/getAskDetails/:id', ask_controller.getAskDetails);
