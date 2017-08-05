@@ -7,6 +7,10 @@ html, body, .App, div#root {
   /*height: 80px;*/
 }
 
+.sidebarCloseIcon {
+  margin-top: 10px;
+}
+
 h1.ui.header {
   font-size: 6rem;
 }

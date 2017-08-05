@@ -112,7 +112,7 @@ class App extends Component {
                         direction='right'
                         visible={visible}
                         textAlign='center'>
-                        <Icon name='close' onClick={() => {this.toggleVisibility(false) }} />
+                        <Icon className='sidebarCloseIcon' name='close' onClick={() => {this.toggleVisibility(false) }} />
                         <Header as='h3'>Search Results</Header>
                         <CustomSidebar searchResults={this.state.searchResult} toggleVisibility={this.toggleVisibility}/>
                     </Sidebar>

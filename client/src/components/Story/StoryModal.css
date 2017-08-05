@@ -2,3 +2,13 @@
     right: 10px;
     position: fixed;
 }
+
+
+.commentLabel {
+    right: 70px;
+    position: fixed;
+}
+
+body > div.ui.page.modals.dimmer.transition.visible.active > div > div.actions > button > i{
+    padding-left: 10px;
+}

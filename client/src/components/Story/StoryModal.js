@@ -16,6 +16,19 @@ function convertUnixDate(time) {
 }
 
 const PostItem = (props) => {
+    var comments = [];
+    // if (Array.isArray(props.descendants)) {
+    //     comments = props.descendants.filter(function(item) {
+    //         // TODO: might want to remove this, and add the filtering 0 comment story
+    //         //       logic to the get story api
+    //         $.get('/api/getStoryDetails/' + item).done(function (data) {
+    //             return !('dead' in data)    
+    //         }.bind(this));
+    //     })
+    // }
+    console.log(props.descendants);
+    var numKids = props.descendants === undefined ? 0 : props.descendants.length
+
     return (
         <Item>
             <Item.Content>
@@ -29,6 +42,10 @@ const PostItem = (props) => {
                         <Icon name='star' />
                         {' ' + props.score}
                     </Label>
+                    <Label className='commentLabel' color='blue'>
+                        <Icon name='comment' />
+                         {' ' + numKids} 
+                    </Label>
                 </Item.Meta>
             </Item.Content>
         </Item>
@@ -38,14 +55,19 @@ const PostItem = (props) => {
 class StoryModal extends Component {
     state = {
         posts: [],
-        loading: false
+        loading: false,
+        open: false
     }
 
     getStoryByTags() {
-        this.setState({loading: true})
+        this.setState({loading: true, open: true})
         $.get('/api/getStoryByTags/' + this.props.selectedCategories.join(',').replace(' / ', '|')).done(function (data) {
             this.setState({ posts: data, loading: false });
         }.bind(this));
+    }
+
+    closeModal() {
+        this.setState({open : false})
     }
 
     render() {
@@ -58,25 +80,26 @@ class StoryModal extends Component {
                         title={post.title}
                         author={post.by}
                         score={post.score}
-                        date={post.time} />
+                        date={post.time}
+                        descendants={post.kids} />
                 )
             })
         }
 
         return (
-            <Modal trigger={
+            <Modal open={this.state.open} trigger={
                     <Button size='huge' color='red' onClick={this.getStoryByTags.bind(this)}>
                         Explore
                     </Button>
                     }
-                    closeIcon='close'>
+                    closeIcon={<Icon name='close' onClick={this.closeModal.bind(this)}/>}>
                 <Modal.Header>Selected Posts{' '}
                     {_.map(this.props.selectedCategories, function(item) {
                         return <Label size='huge' key={item} color='orange'>{item}</Label>
                     })}
                 </Modal.Header>
                 {this.state.loading ? <CustomLoader /> : 
-                    <Modal.Content image scrolling>
+                    <Modal.Content scrolling>
                         <Item.Group divided>
                             {postsElements}
                         </Item.Group>
@@ -84,8 +107,8 @@ class StoryModal extends Component {
                 }
                 
                 <Modal.Actions>
-                    <Button primary>
-                        Close <Icon name='close' />
+                    <Button primary onClick={this.closeModal.bind(this)}>
+                        Close <Icon name='close' className='closeModalIcon' />
                     </Button>
                 </Modal.Actions>
             </Modal>

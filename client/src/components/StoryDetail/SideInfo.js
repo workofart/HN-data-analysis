@@ -12,17 +12,33 @@ function convertUnixDate(time) {
     return String(year) + '/' + String(month) + '/' + String(date);
 }
 
+const notificationStyle = {
+    NotificationItem : {
+        info: {
+            marginTop: '60px'
+        }
+    }
+}
+
 class SideInfo extends Component{
 
     componentDidMount() {
         this._notificationSystem = this.refs.notificationSystem;
     }
+
+    // check if the comments have changed, if so, set the state
+    componentWillReceiveProps(nextProps) {  
+        if (nextProps !== this.props) {
+            this.setState({comments : nextProps.rows});
+        }
+    }
+
     handleSearch(e, data) {
         this.setState({searchParam : data.value});
     }
 
     sortComments(e) {
-        var sorted_comments = _.sortBy(this.state.comments, 'numKids').reverse();
+        var sorted_comments = _.sortBy(this.props.rows, 'numKids').reverse();
         this.setState({comments : sorted_comments});
         this._addNotification(e, 'Comments sorted by popularity');
     }
@@ -33,7 +49,7 @@ class SideInfo extends Component{
         message: msg,
         level: 'info',
         position: 'tc',
-        autoDismiss: 2
+        autoDismiss: 3
         });
     }
 
@@ -83,7 +99,7 @@ class SideInfo extends Component{
 
             return (
                 <Segment piled raised color='orange'>
-                    <NotificationSystem ref="notificationSystem" />
+                    <NotificationSystem ref="notificationSystem" style={notificationStyle} />
                     <Header floated='left' as='h3'>
                         <Icon name='talk outline' />
                         User Comments

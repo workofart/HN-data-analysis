@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Table, Menu, Input, Label, Icon, Segment, Header, Dropdown} from 'semantic-ui-react';
+import {Table, Menu, Input, Label, Icon, Segment, Header, Dropdown, Radio, Grid} from 'semantic-ui-react';
 import NotificationSystem from 'react-notification-system';
 import StoryTable from '../Table/Table';
 import './TopStories.css';
@@ -104,6 +104,7 @@ class TopStories extends Component {
                         </Header.Subheader> 
                         </Header>
                         <Input onChange={(e, data) => {this.handleSearch.bind(this)(e, data)}} placeholder='Search...' />
+                        <Radio toggle label='Display no comment stories'/>
                         <Header floated='right' as='h4'>
                             <Icon name='options' />
                             <Header.Content>

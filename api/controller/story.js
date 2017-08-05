@@ -18,7 +18,7 @@ var sendJsonResponse = function (res, status, content){
 var getStoryById = function (res, item, docs, n) {
     var id = item.id;
     itemModel.itemModel.findOne({'id' : id,
-                                'descendants' : { '$gt' : 0},
+                                // 'descendants' : { '$gt' : 0},
                                 'deleted' : { '$exists' : false},
                                 'dead': { '$exists' : false}},
                                 { '_id' : 0}
@@ -27,7 +27,8 @@ var getStoryById = function (res, item, docs, n) {
         .exec(function (err, doc) {
             if (err) {
                 console.error(err)
-            } else {
+            } 
+            else if (doc != null) {
                 doc.tag = item.tag;
                 docs.push(doc);
                 if (docs.length === n) {
@@ -137,8 +138,7 @@ module.exports.getStoryVocabulary = function (req, res) {
 module.exports.getStoriesByTitle = function (req, res) {
     console.log(req.params.query);
     var query = req.params.query.replace('|', ' ');
-    itemModel.itemModel.find({'title' : new RegExp(query, 'i'), 
-                                'type': 'story', 
+    itemModel.itemModel.find({'title' : new RegExp('^' + query, 'i'), 
                                 'descendants' : { '$gt' : 0},
                                 'deleted' : { '$exists' : false},
                                 'dead': { '$exists' : false}
@@ -148,6 +148,7 @@ module.exports.getStoriesByTitle = function (req, res) {
                             'id' : 1,
                             'descendants' : 1
                             })
+    .maxTime(10000)
     .limit(20)
     .lean()
     .exec(function (err, docs) {

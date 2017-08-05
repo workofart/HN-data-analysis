@@ -1,7 +1,12 @@
 .ui.menu {
     background-color: rgba(255, 255, 255, 1);
+    margin-bottom: 50px;
 }
 
 .ui.secondary.pointing.menu {
     margin-bottom: 20px;
+}
+
+#root > div > div.ui.borderless.top.fixed.pointing.menu > div > div > i {
+    right: 2.5em;
 }

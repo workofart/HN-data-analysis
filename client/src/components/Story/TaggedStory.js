@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Label, Icon, Header, Button, Container, Segment, Card} from 'semantic-ui-react';
+import {Label, Icon, Header, Button, Container, Segment, Card, Radio, Grid} from 'semantic-ui-react';
 import NotificationSystem from 'react-notification-system';
 import CustomTagCard from './TagCard/CustomTagCard';
 import StoryModal from './StoryModal';
@@ -74,6 +74,7 @@ class Story extends Component {
                     You can select multiple tags (up to 3) at once, click again to deselect
                 </Header.Subheader> 
                 </Header>
+                <Radio toggle label='Display no comment stories'/>
                 <Card.Group stackable itemsPerRow={5}>
                     {cards}
                 </Card.Group>

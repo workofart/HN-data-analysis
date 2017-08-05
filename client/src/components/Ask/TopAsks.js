@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Segment, Icon, Input, Divider, Grid, Header, Dropdown} from 'semantic-ui-react'
+import {Segment, Icon, Input, Divider, Grid, Header, Dropdown, Radio} from 'semantic-ui-react'
 import CustomLoader from '../Misc/CustomLoader';
 import AskTable from '../Table/Table';
 const $ = require('jquery');
@@ -100,6 +100,7 @@ class TopAsks extends Component {
                 </Header.Subheader> 
                 </Header>
                 <Input onChange={(e, data) => {this.handleSearch.bind(this)(e, data)}} placeholder='Search...' />
+                <Radio toggle label='Display no comment stories'/>
                 <Header floated='right' as='h4'>
                     <Icon name='options' />
                     <Header.Content>

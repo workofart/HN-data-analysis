@@ -10,8 +10,9 @@
     bottom: 0; 
     left: 0;
     width: 100%;
-     text-align: center;  
-    margin: 0; padding: 30px 0; 
+    text-align: center;  
+    margin: 0;
+    padding-bottom: 30px;
         
     /* "transparent" only works here because == rgba(0,0,0,0) */
     background-image: linear-gradient(to bottom, transparent, #e9ece5);

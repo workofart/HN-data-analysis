@@ -8,6 +8,7 @@ class Navigation extends Component {
 	state = { 
 		activeItem: 'home',
 		searchTimeOut: 0,
+		searchValue: '',
 		loading: false
 	}
 
@@ -34,13 +35,18 @@ class Navigation extends Component {
 			this.props.toggleSidebar(false);
 		}
 		if (data.value.length >= 1) {
-			this.setState({loading: true})
+			this.setState({loading: true, searchValue : data})
 			this.props.setSearchQuery(data.value);
 			this.props.toggleSidebar(true);
 
 			// clean input
 			var str = data.value.replace(' ', '|');
-			$.get('/api/getStoriesByTitle/' + str).done(function(result) {
+			$.get('/api/getStoriesByTitle/' + str)
+			.fail(function() {
+				this.props.fetchSearchResults([{title : 'No results'}]);
+				this.setState({loading: false});
+			}.bind(this))
+			.done(function(result) {
 				this.props.fetchSearchResults(result);
 				this.setState({loading: false});
 			}.bind(this))
@@ -53,6 +59,8 @@ class Navigation extends Component {
 	render() {
 		const { activeItem } = this.state
 
+		
+
 		return (
 				<Menu fixed='top' borderless pointing>
 					<Menu.Item as={Link} to='/' name='home' active={activeItem === 'home'} onClick={this.handleItemClick}><Icon name='home' /></Menu.Item>
@@ -61,9 +69,9 @@ class Navigation extends Component {
 					<Menu.Item as={Link} to='/tags' name='tags' active={activeItem === 'tags'} onClick={this.handleItemClick} />
 					<Menu.Item as={Link} to='/users' name='users' active={activeItem === 'users'} onClick={this.handleItemClick} />
 					<Menu.Menu position='right'>
-						<Menu.Item>
-						<Input size='large' icon={{ name:'search'}} placeholder='Search...' loading={this.state.loading} onChange={this.handleSearch.bind(this)}/>
-						</Menu.Item>
+						{/* <Menu.Item> */}
+						<Input icon={<Icon className='searchIcon' name='search' circular link onClick={ (e) => {this.handleSearch.bind(this)(e, this.state.searchValue) }} />}  placeholder='Search...' loading={this.state.loading} onChange={this.handleSearch.bind(this)}/>
+						{/* </Menu.Item> */}
 						<Menu.Item as={Link} to='/about' name='about' active={activeItem === 'about'} onClick={this.handleItemClick} />
 					</Menu.Menu>
 					
