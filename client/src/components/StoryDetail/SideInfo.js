@@ -40,6 +40,7 @@ class SideInfo extends Component{
     sortComments(e) {
         var sorted_comments = _.sortBy(this.props.rows, 'numKids').reverse();
         this.setState({comments : sorted_comments});
+        console.log(sorted_comments)
         this._addNotification(e, 'Comments sorted by popularity');
     }
 
@@ -84,7 +85,7 @@ class SideInfo extends Component{
     }
 
     render () {
-        var comments = this.props.rows;
+        var comments = this.state.comments;
         if(comments && comments.length != 0) {
             // Loop through dataset to generate comment replies
             

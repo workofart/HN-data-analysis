@@ -17,7 +17,12 @@ const categories = [
 
 class Story extends Component {
     state = {
-        selectedCategories : []
+        selectedCategories : [],
+        displayNoComments: false
+    }
+
+    toggleDisplayNoComments() {
+        this.setState({displayNoComments : !this.state.displayNoComments});
     }
 
     addToSelection(category) {
@@ -47,7 +52,9 @@ class Story extends Component {
             if (this.state.selectedCategories.length != 0) {
                 return (
                     <Container style={{ marginTop: '60px'}} textAlign='center'>
-                        <StoryModal selectedCategories={this.state.selectedCategories}/>
+                        <StoryModal
+                            displayNoComments={this.state.displayNoComments}
+                            selectedCategories={this.state.selectedCategories}/>
                     </Container>
                 )
             }
@@ -74,7 +81,7 @@ class Story extends Component {
                     You can select multiple tags (up to 3) at once, click again to deselect
                 </Header.Subheader> 
                 </Header>
-                <Radio toggle label='Display no comment stories'/>
+                <Radio toggle label='Hide stories w/o comments' onChange={this.toggleDisplayNoComments.bind(this)}/>
                 <Card.Group stackable itemsPerRow={5}>
                     {cards}
                 </Card.Group>

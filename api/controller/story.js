@@ -15,10 +15,11 @@ var sendJsonResponse = function (res, status, content){
     res.json(content);
 }
 
-var getStoryById = function (res, item, docs, n) {
+var getStoryById = function (res, item, docs, n, noCommentFlag) {
     var id = item.id;
+    var minComment = noCommentFlag === 'false' ? 0 : 1;
     itemModel.itemModel.findOne({'id' : id,
-                                // 'descendants' : { '$gt' : 0},
+                                'descendants' : { '$gte' : minComment},
                                 'deleted' : { '$exists' : false},
                                 'dead': { '$exists' : false}},
                                 { '_id' : 0}
@@ -37,6 +38,13 @@ var getStoryById = function (res, item, docs, n) {
                     // if (docs.length === items.length) {
                     // sendJsonResponse(res, 200, docs);
                 // }
+            }
+            // handle no results
+            else {
+                docs.push({});
+                if (docs.length === n) {
+                    sendJsonResponse(res, 200, docs);
+                }
             }
             
     })  
@@ -97,14 +105,17 @@ module.exports.getStoryTagById = function(req, res) {
 }
 
 module.exports.getStoryByTags = function(req, res) {
-    var tags = req.params.tags.toString().replace('|', '/').split(',')
+    var skipRecords = _.random(500000);
+    var tags = req.query.selectedCategories.toString().replace('|', '/').split(',')
+    var resultLimit = req.query.displayNoComments === 'false' ? 20 : 40
     console.log('getStoryByTags: ' + tags)
-    tagsModel.tagsModel.find({'tag': {$all : tags}})
-        .limit(20)
-        .exec(function(err, docs) {
+    // tagsModel.tagsModel.find({'tag': {$all : tags}})
+        // .limit(resultLimit)
+    tagsModel.tagsModel.aggregate([{$match: { 'tag' : {$all : tags}}}, {$sample: { size: resultLimit}}], 
+        function(err, docs) {
             var docArr = [];
             for (var i = 0; i < docs.length; i++) {
-                getStoryById(res, docs[i], docArr, docs.length);
+                getStoryById(res, docs[i], docArr, docs.length, req.query.displayNoComments);
             }
         })
 }

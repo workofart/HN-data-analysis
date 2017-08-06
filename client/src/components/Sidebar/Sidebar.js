@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Header, Segment, Icon, Label, List} from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
+import './Sidebar.css';
 
 
 const resultRow = (data, action) => {

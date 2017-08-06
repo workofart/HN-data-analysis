@@ -100,7 +100,6 @@ class TopAsks extends Component {
                 </Header.Subheader> 
                 </Header>
                 <Input onChange={(e, data) => {this.handleSearch.bind(this)(e, data)}} placeholder='Search...' />
-                <Radio toggle label='Display no comment stories'/>
                 <Header floated='right' as='h4'>
                     <Icon name='options' />
                     <Header.Content>

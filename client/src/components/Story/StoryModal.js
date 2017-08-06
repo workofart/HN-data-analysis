@@ -26,7 +26,7 @@ const PostItem = (props) => {
     //         }.bind(this));
     //     })
     // }
-    console.log(props.descendants);
+    // console.log(props.descendants);
     var numKids = props.descendants === undefined ? 0 : props.descendants.length
 
     return (
@@ -61,9 +61,29 @@ class StoryModal extends Component {
 
     getStoryByTags() {
         this.setState({loading: true, open: true})
-        $.get('/api/getStoryByTags/' + this.props.selectedCategories.join(',').replace(' / ', '|')).done(function (data) {
-            this.setState({ posts: data, loading: false });
-        }.bind(this));
+        // $.get('/api/getStoryByTags/' + this.props.selectedCategories.join(',').replace(' / ', '|')).done(function (data) {
+        //     this.setState({ posts: data, loading: false });
+        // }.bind(this));
+
+        $.ajax({
+            url: '/api/getStoryByTags/',
+            type: 'get',
+            data: {
+                selectedCategories: this.props.selectedCategories.join(',').replace(' / ', '|'),
+                displayNoComments: this.props.displayNoComments
+            },
+            success: function(data) {
+                data = _.filter(data, function(item) {
+                    return !(Object.keys(item).length === 0 && item.constructor === Object);
+                })
+                console.log(data);
+                this.setState({ posts: data, loading: false });
+            }.bind(this),
+            fail: function(err) {
+                console.log('Error getting tags')
+                this.setState({ loading: false})
+            }
+        });
     }
 
     closeModal() {
