@@ -87,7 +87,7 @@ class App extends Component {
         console.log(text);
     }
 
-    displaySearchResult(result) {
+    getSearchResult(result) {
         this.setState({searchResult: result})
     }
 
@@ -103,7 +103,7 @@ class App extends Component {
                     handleActivePage={this.handleActivePage}
                     toggleSidebar={this.toggleVisibility}
                     setSearchQuery={this.setSearchQuery.bind(this)}
-                    fetchSearchResults={this.displaySearchResult.bind(this)}/>
+                    fetchSearchResults={this.getSearchResult.bind(this)}/>
                 <Sidebar.Pushable as={Segment}>
                     <Sidebar
                         as={Container}
