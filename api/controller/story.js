@@ -148,16 +148,16 @@ module.exports.getStoryVocabulary = function (req, res) {
 
 module.exports.getStoriesByTitle = function (req, res) {
     console.log(req.params.query);
-    var query = req.params.query.replace('|', ' ');
-    itemModel.itemModel.find({'title' : new RegExp('^' + query, 'i'), 
+    var query = req.params.query.replace('|', '\\s');
+    itemModel.itemModel.find({'title' : new RegExp(query, 'i'),
                                 'descendants' : { '$gt' : 0},
-                                'deleted' : { '$exists' : false},
-                                'dead': { '$exists' : false}
                             },
                             {'score' : 1,
                             'title' : 1,
                             'id' : 1,
-                            'descendants' : 1
+                            'descendants' : 1,
+                            'deleted' : 1,
+                            'dead': 1
                             })
     .maxTime(10000)
     .limit(20)
