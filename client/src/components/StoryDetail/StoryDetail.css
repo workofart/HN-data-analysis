@@ -43,6 +43,6 @@ p:before.authorSubheader {
     width: 50px;
 }
 
-.ui.basic.segment {
-	/* padding-left: 40px; */
+#root > div > div.ui.segment.pushable > div.pusher > div > div.ui.padded.relaxed.middle.aligned.grid {
+	/* padding-top: 250px; */
 }

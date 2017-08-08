@@ -20,4 +20,13 @@
 
 .ui.label {
     background-color: initial;
+} 
+
+#root > div > div.ui.pushable.segment > div.pusher > div > div > div:nth-child(1) > div > div > div.ui.mini.basic.clearing.center.aligned.iconSegment.segment {
+    margin: 0px;
+    padding: 0px;
+}
+
+#root > div > div.ui.pushable.segment > div.pusher > div > div > div:nth-child(1) > div > div > div.ui.basic.center.aligned.statsSegment.segment {
+    padding: 0px;
 }

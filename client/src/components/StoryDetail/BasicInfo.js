@@ -41,7 +41,7 @@ class BasicInfo extends Component{
 
                 return (
                     <div>
-                    <Segment basic textAlign='center'>
+                    <Segment className='statsSegment' basic textAlign='center'>
                         
                         {/* <CustomLabel  textAlign='left' label='Id' text={this.props.id} />
                         <CustomLabel  textAlign='left' label='Date' text={this.props.date} />
@@ -58,10 +58,13 @@ class BasicInfo extends Component{
                         </Label.Group> */}
                         <Statistic size='mini' label='Score' value={this.props.score} />
                         <Statistic size='mini' label='Comments' value={this.props.kids} />
+                        
+                        <ReadMore maxDisplayLines={4} text={this.props.text}/>
+                    </Segment>
+                    <Segment className='iconSegment' clearing size='mini' basic textAlign='center'>
                         <Label circular color='blue' as='a' href={this.props.url}>
                             <Icon fitted name='linkify'/>
                         </Label>
-                        <ReadMore maxDisplayLines={4} text={this.props.text}/>
                     </Segment>
                     <Segment basic textAlign='center'>
                         {tags}
