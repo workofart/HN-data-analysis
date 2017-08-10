@@ -1,12 +1,12 @@
 .ui.red.label, .ui.red.labels .label {
-    right: 10px;
-    position: fixed;
+    right: -200px;
+    /* position: fixed; */
 }
 
 
 .commentLabel {
-    right: 70px;
-    position: fixed;
+    right: -200px;
+    /* position: fixed; */
 }
 
 body > div.ui.page.modals.dimmer.transition.visible.active > div > div.actions > button > i{

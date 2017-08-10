@@ -18,22 +18,42 @@ function convertUnixDate(time) {
     return String(year) + '/' + String(month) + '/' + String(date);
 }
 
-
-
 class StoryDetail extends Component {
 
     state = {
         storyDetail: null,
         topComments: null,
         storyVocabulary: null,
-        tags: {}
+        tags: {}, 
+        isStick: false
     };
 
-    componentDidMount() {
-        $('.titleHeader').on('scroll', function() {
-            console.log(document.documentElement.scrollTop)
-        })
+    handleScroll (event) {
+        var top = event.target.scrollingElement.scrollTop
+        // console.log(top);
+        // if scrolling reached header, stick the title
+        if (top > 30 && !this.state.isStick) {
+            // console.log(this.props);
+            this.props.stickTitle(this.state.storyDetail.title)
+            this.setState({isStick : true})
+        }
+        else if (top <= 30 && this.state.isStick) {
+            this.props.stickTitle('')
+            this.setState({isStick : false})
+        }
+        
+    }
 
+    componentWillUnmount() {
+        $(window).off('scroll')
+        this.props.stickTitle('')
+    }
+
+    componentDidMount() {
+        $(window).scroll(function(e) {
+            this.handleScroll(e);
+        }.bind(this))
+        
         $.get('/api/getStoryDetails/' + this.props.match.params.storyId).done(function (data) {
             this.setState({ storyDetail: data });
 
@@ -104,14 +124,45 @@ class StoryDetail extends Component {
 
     render() {
 
+        // const stickyStyle = this.state.isStick ?
+        // {
+        //     // transform: 'scale(0.8, 0.8)',
+        //     // color: '#272623',
+        //     // fontFamily: 'Martel',
+        //     fontSize: '24px',
+        //     // fontWeight: '300',
+        //     // lineHeight: '52px',
+        //     // marginBottom: '48px',
+        //     textAlign: 'center',
+        //     // paddingTop: '220px',
+        //     // paddingBottom: '50px',
+        //     transition: 'all ease 0.5s',
+        //     background: '#e9ece5',
+        //     top: '70px',
+        //     position: 'fixed',
+        //     width: '100%',
+        //     zIndex: '120'
+        // } :
+        // {
+        //     color: '#272623',
+        //     fontFamily: 'Martel',
+        //     fontSize: '32px',
+        //     fontWeight: '300',
+        //     lineHeight: '52px',
+        //     marginBottom: '48px',
+        //     textAlign: 'center',
+        //     paddingTop: '80px',
+        //     transition: 'all ease 0.5s'
+        // }
+
         if (this.state.storyDetail && this.state.topComments != null) {
             var storyDetail = this.state.storyDetail;
             return (
                 <div className='storyDetailBody'>
-                            <h1 className='titleHeader'>
-                                {'"' + storyDetail.title + '"'}
-                            </h1>
-                            <p className='authorSubheader'>{storyDetail.by + ' - ' + convertUnixDate(storyDetail.time)} </p>
+                    <h1 className='titleHeader'>
+                        {'"' + storyDetail.title + '"'}
+                    </h1>
+                    <p className='authorSubheader'>{storyDetail.by + ' - ' + convertUnixDate(storyDetail.time)} </p>
                     <Grid padded relaxed verticalAlign='middle'>
                         <Grid.Row>
                             <Grid.Column width={16}>

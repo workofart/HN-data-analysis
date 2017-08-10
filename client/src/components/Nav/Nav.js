@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Segment, Icon, Dropdown, Input } from 'semantic-ui-react';
+import { Menu, Segment, Icon, Dropdown, Input, Header } from 'semantic-ui-react';
 import './Nav.css';
 import $ from 'jquery';
 
@@ -68,6 +68,7 @@ class Navigation extends Component {
 					<Menu.Item as={Link} to='/topAsks' name='topAsks' active={activeItem === 'topAsks'} onClick={this.handleItemClick} />
 					<Menu.Item as={Link} to='/tags' name='tags' active={activeItem === 'tags'} onClick={this.handleItemClick} />
 					<Menu.Item as={Link} to='/users' name='users' active={activeItem === 'users'} onClick={this.handleItemClick} />
+					<Menu.Item as={Header} size='small' >{this.props.stickyTitle}</Menu.Item>
 					<Menu.Menu position='right'>
 						{/* <Menu.Item> */}
 						<Input icon={<Icon className='searchIcon' name='search' circular link onClick={ (e) => {this.handleSearch.bind(this)(e, this.state.searchValue) }} />}  placeholder='Search...' loading={this.state.loading} onChange={this.handleSearch.bind(this)}/>

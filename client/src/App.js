@@ -77,7 +77,8 @@ class App extends Component {
         currentPage: 'home', 
         visible: false,
         searchQuery: '',
-        searchResult: []
+        searchResult: [],
+        stuckTitle: ''
     }
 
     toggleVisibility = (status) => this.setState({ visible: status })
@@ -95,6 +96,11 @@ class App extends Component {
         this.setState({ currentPage: currentPage })
     }
 
+    stickTitle(title) {
+        this.setState({stuckTitle : title})
+        console.log('sticking title: ' + title)
+    }
+
     render() {
         const {visible} = this.state;
         return (
@@ -103,7 +109,8 @@ class App extends Component {
                     handleActivePage={this.handleActivePage}
                     toggleSidebar={this.toggleVisibility}
                     setSearchQuery={this.setSearchQuery.bind(this)}
-                    fetchSearchResults={this.getSearchResult.bind(this)}/>
+                    fetchSearchResults={this.getSearchResult.bind(this)}
+                    stickyTitle={this.state.stuckTitle}/>
                 <Sidebar.Pushable as={Segment}>
                     <Sidebar
                         as={Container}
@@ -123,7 +130,7 @@ class App extends Component {
                                 <Route path='/topStories' component={TopStories} />
                                 <Route path='/topAsks' component={TopAsks} />
                                 <Route path='/tags' component={TaggedStory} />
-                                <Route path='/story/:storyId' component={StoryDetail} />
+                                <Route path='/story/:storyId' render={(props) => (<StoryDetail {...props} stickTitle={(title) => {this.stickTitle(title)}} />)} />
                                 <Route path='/users' component={Users} />
                                 <Route path='/about' component={About} />
                                 <Route component={NotFound} />

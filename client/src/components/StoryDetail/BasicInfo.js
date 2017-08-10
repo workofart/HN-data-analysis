@@ -42,20 +42,6 @@ class BasicInfo extends Component{
                 return (
                     <div>
                     <Segment className='statsSegment' basic textAlign='center'>
-                        
-                        {/* <CustomLabel  textAlign='left' label='Id' text={this.props.id} />
-                        <CustomLabel  textAlign='left' label='Date' text={this.props.date} />
-                        <CustomLabel  textAlign='left' label='Author' text={this.props.author} /> */}
-                        {/* <Label.Group>
-                            <CustomLabel icon='thumbs outline up' textAlign='left' label='Score' text={this.props.score} />
-                            
-                            <CustomLabel textAlign='left' label='Content' text={this.props.text} />
-                            
-                            <Popup
-                                trigger={<Label circular color='blue' icon='exchange' content='Related'/>}
-                                content={'Test related story'}
-                                hideOnScroll />
-                        </Label.Group> */}
                         <Statistic size='mini' label='Score' value={this.props.score} />
                         <Statistic size='mini' label='Comments' value={this.props.kids} />
                         

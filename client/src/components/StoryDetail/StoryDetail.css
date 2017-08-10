@@ -11,15 +11,14 @@
 
 .titleHeader {
 	color: #272623;
-	font-family: 'Martel';
+	font-family: Martel;
 	font-size: 32px;
 	font-weight: 300;
 	line-height: 52px;
 	margin-bottom: 48px;
-    text-align: center;
-    padding-top: 80px; 
+	text-align: center;
+	padding-top: 80px;
 }
-
 .authorSubheader {
 	color: #272623;
 	font-family: 'Roboto Condensed';
