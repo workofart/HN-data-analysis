@@ -24,6 +24,7 @@ class SideInfo extends Component{
 
     componentDidMount() {
         this._notificationSystem = this.refs.notificationSystem;
+        this.debouncedSearch = _.debounce(this.handleSearch, 450).bind(this)
     }
 
     // check if the comments have changed, if so, set the state
@@ -105,7 +106,7 @@ class SideInfo extends Component{
                         <Icon name='talk outline' />
                         User Comments
                     </Header>
-                    <Input icon size='mini' icon='search' onChange={(e, data) => {this.handleSearch.bind(this)(e, data)}} />
+                    <Input icon size='mini' icon='search' onChange={this.debouncedSearch} />
                     <Button floated='right' color='red' content='Trending' icon='line chart' onClick={this.sortComments.bind(this)} />
                     <Divider />
                     <Comment.Group>

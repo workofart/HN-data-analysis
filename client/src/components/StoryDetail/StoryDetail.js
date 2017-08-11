@@ -45,14 +45,16 @@ class StoryDetail extends Component {
     }
 
     componentWillUnmount() {
-        $(window).off('scroll')
+        // $(window).off('scroll')
+        window.removeEventListener('scroll', _.throttle(this.handleScroll, 100).bind(this))
         this.props.stickTitle('')
     }
 
     componentDidMount() {
-        $(window).scroll(function(e) {
-            this.handleScroll(e);
-        }.bind(this))
+        window.addEventListener('scroll', _.throttle(this.handleScroll, 100).bind(this), {passive: true})
+        // $(window).scroll(function(e) {
+        //     this.handleScroll(e);
+        // }.bind(this))
         
         $.get('/api/getStoryDetails/' + this.props.match.params.storyId).done(function (data) {
             this.setState({ storyDetail: data });
