@@ -46,12 +46,12 @@ class StoryDetail extends Component {
 
     componentWillUnmount() {
         // $(window).off('scroll')
-        window.removeEventListener('scroll', _.throttle(this.handleScroll, 100).bind(this))
+        window.removeEventListener('scroll', _.throttle(this.handleScroll.bind(this), 500))
         this.props.stickTitle('')
     }
 
     componentDidMount() {
-        window.addEventListener('scroll', _.throttle(this.handleScroll, 100).bind(this), {passive: true})
+        window.addEventListener('scroll', _.throttle(this.handleScroll.bind(this), 500), {passive: true})
         // $(window).scroll(function(e) {
         //     this.handleScroll(e);
         // }.bind(this))
