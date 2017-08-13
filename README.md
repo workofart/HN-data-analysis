@@ -17,14 +17,21 @@ This project is a web interface for interacting with the data collected from [Ha
 - [Create-react-app](https://github.com/facebookincubator/create-react-app)
 
 ### Dependencies
-  - MongoDB should be running on **localhost:27017**
+  - [MongoDB](https://docs.mongodb.com/manual/installation/) should be running on **localhost:27017**
+  - [ZeroMQ](http://zeromq.org/)
+  - Python
+  - [ZeroRPC](http://www.zerorpc.io/) for Python and Node.js
 
 ### To Run
 
-`npm run-script start`
+`npm start`
 
 - Server will be running on **http://localhost:3001/**
 - UI/Client will be running on **http://localhost:3000/**
+
+`python api\controller\py_script.py`
+
+- ZeroRPC python service will be listening to tcp://0.0.0.0:4242, *assuming python service is on the same machine as the node server*
 
 ### Other commands (create-react-app)
 
