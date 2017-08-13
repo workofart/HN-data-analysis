@@ -30,6 +30,9 @@
     "mongodb": "^2.2.21",
     "mongoose": "^4.7.7",
     "promise": "^7.1.1",
-    "underscore": "^1.8.3"
+    "python-shell": "^0.4.0",
+    "underscore": "^1.8.3",
+    "zeromq": "^4.5.0",
+    "zerorpc": "^0.9.7"
   }
 }

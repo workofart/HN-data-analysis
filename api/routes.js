@@ -3,6 +3,7 @@ var router = express.Router();
 
 var story_controller = require('./controller/story');
 var ask_controller = require('./controller/ask');
+var python_controller = require('./controller/python');
 
 router.get('/getTopStories/:n', story_controller.getTopStories);
 router.get('/getRandomStories/:samples', story_controller.getRandomStories);
@@ -17,5 +18,9 @@ router.get('/getStoriesByTitle/:query', story_controller.getStoriesByTitle);
 
 router.get('/getTopAsks', ask_controller.getTopAsks);
 router.get('/getAskDetails/:id', ask_controller.getAskDetails);
+
+
+// Python API
+router.get('/py/getLatestStories', python_controller.getLatestStories);
 
 module.exports = router;
